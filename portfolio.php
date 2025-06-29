@@ -10,12 +10,104 @@
   
    
   }
+  .paragraphe animate{
+    font-size: 12px;
+  }
+  /* Responsive tablette */
+@media screen and (max-width: 1024px) {
+  .resume-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .skill-card {
+    width: 45%;
+    margin: auto;
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .butt {
+    width: 40vw;
+  }
+}
+.profil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+
+/* Responsive mobile */
+@media screen and (max-width: 768px) {
+  .profil {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .txt.animate {
+    margin-bottom: 10px;
+  }
+
+  .image.animate img {
+    width: 60%;
+  }
+
+  .resume-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .skill-card {
+    width: 80%;
+  }
+
+  .butt {
+    width: 60vw;
+    font-size: 14px;
+  }
+
+  h2, h3 {
+    font-size: 18px;
+  }
+
+  .paragraphe.animate {
+    font-size: 14px;
+  }
+}
+
   
 </style>
 <div class="profil animate" class="profilanimate" >
     <div class="txt animate">
         <p class="paragraphe animate">
-          Developpeur web + <br> Web Designer 
+    Développeur Junior   <br>et créateur&nbsp;  de contenus <br>numériques
         </p>
     </div>
     <div class="image animate">
@@ -87,14 +179,14 @@ Première année de médecine puis prépa pharmacie à l’IPSEM Angers, avant d
 
     <!-- Skills -->
     <div class="skills-section">
-      <h2>🧠 My Skills</h2>
-      <p>Here are some software and technologies I’m proficient with:</p>
+      <h2>🧠 Mes Skills</h2>
+      <p>Voici quelques logiciels et technologies que je maîtrise :</p>
       <div class="skills-grid animate">
         <div class="skill-card"><img src="ef7357f8edafba5276df1698801ce94a-removebg-preview.png" alt=""><br>HTML,CSS & JS<br><span>90%</span></div>
         <div class="skill-card"><img src="b1ae239e57d0569868ec86c7a7b53c79-removebg-preview.png" alt=""><br>PHP & SQL <br><span>90%</span></div>
         <div class="skill-card"><img src="f5f89263917abf52bbce45da7ba811be-removebg-preview.png" alt=""><br>Adobe créative cloud<br><span>85%</span></div>
         <div class="skill-card"><img src="4392b765c2f8e3f8961f409f39eca1f8-removebg-preview.png" alt=""><br>WordPress<br><span>90%</span></div>
-        <div class="skill-card"><img src="9730c7b997bdc91dd083ff2a61383815-removebg-preview.png" alt=""><br>Git<br><span>100%</span></div>
+        <div class="skill-card"><img src="9730c7b997bdc91dd083ff2a61383815-removebg-preview.png" alt=""><br>Git et github<br><span>100%</span></div>
         <div class="skill-card"><img src="28d3af8d16005feace7bee0ecee2afe8-removebg-preview.png" alt=""><br>Figma<br><span>90%</span></div>
       </div>
     </div>

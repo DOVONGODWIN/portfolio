@@ -6,7 +6,13 @@ body {
   }
   
   .header {
-    background-color: #0d0d0d;
+    background: rgba(255, 255, 255, 0.1);  /* transparence blanche */
+  backdrop-filter: blur(10px);           /* effet de flou */
+  -webkit-backdrop-filter: blur(10px);   /* compatibilité Safari */
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  color: white;
     padding: 20px 40px;
     position: sticky;
     top: 0;

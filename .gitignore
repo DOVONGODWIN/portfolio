@@ -1,0 +1,17 @@
+﻿# Logs et données runtime
+contact_log.txt
+contacts_received.json
+pending_emails.json
+
+# Binaires et installateurs
+Composer-Setup.exe
+*.log
+
+# Environnement/composer
+/vendor/
+composer.lock
+
+# Système/OS
+.DS_Store
+Thumbs.db
+

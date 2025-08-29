@@ -48,6 +48,10 @@ margin-left: 45vh;
     gap:4px;
     
 }
+.casep div a {
+ text-decoration: none;
+ color:rgb(238, 0, 255);
+}
 .img2{
   height: 70vh;
   width: 35vh;
@@ -88,6 +92,89 @@ height: 6vh;
 }
 
 
+
+
+@media screen and (max-width: 1024px) {
+  .Mr1 {
+    flex-direction: column;
+    margin: 30px auto;
+    align-items: center;
+    width: 80%;
+  }
+
+  .Mr2 {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .img2 {
+    width: 100%;
+    height: auto;
+  }
+
+  .contact-form {
+    margin: 0 5vw;
+  }
+
+  .butt2 {
+    width: 50%;
+    height: auto;
+    padding: 10px;
+  }
+
+  .casep {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .casep div {
+    width: 90%;
+    height: auto;
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Mr1 {
+    margin: 20px auto;
+    padding: 0 10px;
+    width: 90%;
+  }
+
+  .Mr2 {
+    width: 100%;
+  }
+
+  .casep div {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .butt2 {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .info {
+    margin-top: 5vh;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .imgdiv {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .imgdiv {
+    display: none;
+  }
+}
+
+
+
+
    
   </style>
 
@@ -109,8 +196,8 @@ height: 6vh;
       <div>godwindovon@gmail.com</div>
     </div>
     <div class="casep">
-      <div>ANGERS 49100</div>
-      <div>16 Rue du Maine </div>
+      <div><a href="https://www.linkedin.com/in/godwin-dovon-mess656/">linkedin</a></div>
+      <div><a href="https://github.com/DOVONGODWIN">Github</a></div>
     </div>
     </div>
   </div>

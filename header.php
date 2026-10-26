@@ -1,92 +1,90 @@
+<?php
+// En-tête commun : chaque page définit $pageTitle / $pageDescription avant d'inclure ce fichier
+$pageTitle = $pageTitle ?? 'Godwin Dovon - Développeur Full-Stack';
+$pageDescription = $pageDescription ?? 'Portfolio de Godwin Dovon, développeur full-stack et designer graphique : projets web, PHP, React, WordPress et maquettes Figma.';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Header Example</title>
+  <title><?php echo htmlspecialchars($pageTitle); ?></title>
+  <meta name="description" content="<?php echo htmlspecialchars($pageDescription); ?>">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<?php echo htmlspecialchars($pageTitle); ?>">
+  <meta property="og:description" content="<?php echo htmlspecialchars($pageDescription); ?>">
+  <meta property="og:image" content="images/logo.png">
+  <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="stylesheet" href="gg.css">
-</head>
-<style>
-   .header {
-    background: rgba(255, 255, 255, 0.1);  /* transparence blanche */
-  backdrop-filter: blur(10px);           /* effet de flou */
-  -webkit-backdrop-filter: blur(10px);   /* compatibilité Safari */
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  color: white;
-    padding: 20px 40px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <style>
   /* === Responsive Tablette (≤ 1024px) === */
-@media screen and (max-width: 1024px) {
-  .container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+  @media screen and (max-width: 1024px) {
+    .container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .nav {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .cta {
+      align-self: flex-start;
+    }
   }
 
-  .nav {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
+  /* === Responsive Mobile (≤ 768px) === */
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
 
-  .cta {
-    align-self: flex-start;
-  }
-}
+    .logo {
+      flex-direction: column;
+      gap: 5px;
+    }
 
-/* === Responsive Mobile (≤ 768px) === */
-@media screen and (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 20px;
-  }
+    .logo span {
+      font-size: 14px;
+      word-break: break-word;
+    }
 
-  .logo {
-    flex-direction: column;
-    gap: 5px;
-  }
+    .nav {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
 
-  .logo span {
-    font-size: 14px;
-    word-break: break-word;
-  }
+    .nav a {
+      font-size: 16px;
+    }
 
-  .nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
+    .cta {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
-  .nav a {
-    font-size: 16px;
+    .btn {
+      width: 80%;
+      text-align: center;
+    }
   }
-
-  .cta {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .btn {
-    width: 80%;
-    text-align: center;
-  }
-}
-
-</style>
+  </style>
+</head>
 <body>
   <header class="header">
     <div class="container">
       <div class="logo">
-        <a href="portfolio.php"><img src="Sans titre - 1_Plan de travail 1-02.png" alt="Logo"></a>
+        <a href="portfolio.php"><img src="images/logo.png" alt="Logo Godwin Dovon"></a>
         <span>godwindovon@gmail.com</span>
       </div>
       <nav class="nav">

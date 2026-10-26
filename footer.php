@@ -2,7 +2,7 @@
     <div class="footer-content">
       <!-- Logo -->
       <div class="footer-logo">
-        <img src="Sans titre - 1_Plan de travail 1-02.png" alt="Logo" />
+        <img src="images/logo.png" alt="Logo" />
       </div>
   
       <!-- Navigation -->
@@ -13,7 +13,7 @@
       </ul>
   
       <!-- Copyright -->
-      <p class="footer-copy">© 2025 Godwin. All rights reserved.</p>
+      <p class="footer-copy">© <?php echo date('Y'); ?> Godwin Dovon</p>
     </div>
   </footer>
 
@@ -103,3 +103,5 @@
       }
     }
   </style>
+</body>
+</html>

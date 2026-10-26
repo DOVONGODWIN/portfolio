@@ -1,17 +1,36 @@
-﻿# Logs et données runtime
+﻿# --- Informations sensibles (identifiants, mots de passe) ---
+config.php
+.env
+.env.*
+!.env.example
+sendmail.ini
+php_email_config.ini
+
+# --- Données privées et runtime (messages de contact, logs) ---
+data/*
+!data/.htaccess
 contact_log.txt
 contacts_received.json
 pending_emails.json
-
-# Binaires et installateurs
-Composer-Setup.exe
 *.log
 
-# Environnement/composer
+# --- Dépendances / build ---
 /vendor/
-composer.lock
+node_modules/
+dist/
 
-# Système/OS
+# --- Binaires et installateurs ---
+*.exe
+
+# --- Système / OS / éditeur ---
 .DS_Store
 Thumbs.db
+desktop.ini
+.vscode/
+.idea/
 
+# --- Docs locales (non poussées) ---
+README-EMAIL-CONFIG.md
+README-MODERN.md
+DEMARRAGE-RAPIDE.md
+RESUME-SOLUTION.md

@@ -1,16 +1,8 @@
-<?php include 'header.php'; ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mes Projets - Dovon Godwin</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-</head>
-<body>
+<?php
+$pageTitle = "Réalisations - Godwin Dovon";
+$pageDescription = "Projets web, applications PHP, React, sites WordPress et maquettes Figma réalisés par Godwin Dovon.";
+include "header.php";
+?>
   <!-- Hero Section Projets -->
   <section class="projects-hero">
     <div class="projects-hero-background">
@@ -43,6 +35,10 @@
             <span>Tous</span>
             <div class="filter-glow"></div>
           </button>
+          <button class="filter-btn" data-filter="csharp">
+            <span>C# / .NET / Unity</span>
+            <div class="filter-glow"></div>
+          </button>
           <button class="filter-btn" data-filter="php">
             <span>PHP/SQL</span>
             <div class="filter-glow"></div>
@@ -55,6 +51,18 @@
             <span>WordPress</span>
             <div class="filter-glow"></div>
           </button>
+          <button class="filter-btn" data-filter="react">
+            <span>React</span>
+            <div class="filter-glow"></div>
+          </button>
+          <button class="filter-btn" data-filter="design">
+            <span>Design</span>
+            <div class="filter-glow"></div>
+          </button>
+          <button class="filter-btn" data-filter="figma">
+            <span>Figma</span>
+            <div class="filter-glow"></div>
+          </button>
         </div>
       </div>
     </div>
@@ -64,13 +72,14 @@
   <section class="projects-showcase">
     <div class="container-modern">
       <div class="projects-grid" id="projectsGrid">
-        <!-- Projet PHP/SQL -->
-        <div class="project-card" data-tech="php" data-aos="fade-up" data-aos-delay="200">
+
+<!-- Projet PERJAM -->
+        <div class="project-card" data-tech="csharp" data-aos="fade-up" data-aos-delay="600">
           <div class="project-image">
-            <img src="WhatsApp Image 2025-05-30 à 20.42.48_e8d3b8758.jpg" alt="Système de Login Restaurant">
+            <img loading="lazy" src="images/projets/pepperjam.png" alt="Capture du jeu PepperJam">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="D1/accueil.php" class="project-link demo" target="_blank">
+                <a href="https://pepperjam.itch.io/pepperjam" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -78,7 +87,156 @@
                   </svg>
                   <span>Démo</span>
                 </a>
-                <a href="https://github.com/DOVONGODWIN/restaurant-admin-reservation" class="project-link code" target="_blank">
+              </div>
+            </div>
+            <div class="project-tech-badge">C#/Unity</div>
+          </div>
+          <div class="project-content">
+            <h3>Jeu PepperJam</h3>
+            <p class="project-description">
+              PepperJam est un jeu de plateforme 2D de type escape game développé en C# avec Unity, mettant en scène un personnage qui doit collecter des piments tout en évitant des obstacles.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">🎮 Gameplay addictif</span>
+              <span class="feature-tag">🕹️ Contrôles fluides</span>
+              <span class="feature-tag">🎨 Graphismes colorés</span>
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">C#</span>
+              <span class="tech-item">Unity</span>
+            </div>
+          </div>
+        </div>
+
+      <!-- Projet Playa-Rent -->
+        <div class="project-card" data-tech="csharp" data-aos="fade-up" data-aos-delay="600">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/playa-rent.png" alt="Application de location Playa-Rent">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://jdevservices.francecentral.cloudapp.azure.com/QRCodeCustomerJourneyWebApp/home/C7723032-F1E8-48B0-81DE-E81704CEE68E" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15,3 21,3 21,9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Démo</span>
+                </a>
+              </div>
+            </div>
+            <div class="project-tech-badge">C# / ASP.NET / Blazor</div>
+          </div>
+          <div class="project-content">
+            <h3>Playa-Rent</h3>
+            <p class="project-description">
+              Application de location de matériel de plage développée en C# avec ASP.NET et Blazor, offrant une interface utilisateur intuitive pour la réservation et la gestion des équipements.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">🔐 Paiement sécurisé</span>
+              <span class="feature-tag">📅 Gestion des locations</span>
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">C#</span>
+              <span class="tech-item">ASP.NET</span>
+              <span class="tech-item">Blazor</span>
+              <span class="tech-item">CSS</span>
+              <span class="tech-item">JavaScript</span>
+            </div>
+          </div>
+        </div>
+
+<!-- Projet WordPress BDS -->
+        <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="600">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/win-sport-school.png" alt="Site BDS Win Sport School">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://www.messanhgodwin-dovon.mds-angers.yt/www.win-sport--school.com/index.php/accueil/" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15,3 21,3 21,9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Démo</span>
+                </a>
+              </div>
+            </div>
+            <div class="project-tech-badge">WordPress</div>
+          </div>
+          <div class="project-content">
+            <h3>Site BDS Win Sport School</h3>
+            <p class="project-description">
+              Site institutionnel privé avec connexion sécurisée pour le Bureau des Sports, gestion des accès restreints et communication interne.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">🔐 Connexion sécurisée</span>
+              <span class="feature-tag">📄 Pages privées</span>
+              <span class="feature-tag">💬 Actualités</span>
+              <span class="feature-tag">📧 Formulaires</span>
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">WordPress</span>
+              <span class="tech-item">Elementor</span>
+              <span class="tech-item">HTML</span>
+              <span class="tech-item">CSS</span>
+              <span class="tech-item">PHP</span>
+            </div>
+          </div>
+        </div>
+        <!-- Projet WordPress BDS -->
+        <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="600">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/win-sport-school.png" alt="Site BDS Win Sport School - résultats sportifs">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://www.godwin-messanhdovon.espl-angers.yt/index.php/accueil/" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15,3 21,3 21,9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Démo</span>
+                </a>
+              </div>
+            </div>
+            <div class="project-tech-badge">WordPress</div>
+          </div>
+          <div class="project-content">
+            <h3>Site BDS Win Sport School - Résultats sportifs</h3>
+            <p class="project-description">
+              Seconde version du site du Bureau des Sports, centrée sur l'affichage des résultats par équipe, avec un back-office pour la mise à jour des contenus.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">🏆 Affichage de score de matchs par équipe et catégorie</span>
+              <span class="feature-tag">⚙️ Gestion depuis le back-office sans toucher au code</span>
+              <span class="feature-tag">💬 Actualités et calendrier</span>
+              <span class="feature-tag">📧 Formulaires</span>
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">WordPress</span>
+              <span class="tech-item">CPT UI - ACF</span>
+              <span class="tech-item">Elementor</span>
+              <span class="tech-item">HTML</span>
+              <span class="tech-item">CSS</span>
+              <span class="tech-item">PHP</span>
+            </div>
+          </div>
+        </div>
+        <!-- Projet PHP/SQL -->
+        <div class="project-card" data-tech="php" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/restaurant-login.png" alt="Application de gestion de restaurant">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="D1/index.php" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15,3 21,3 21,9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Démo</span>
+                </a>
+                <a href="https://github.com/DOVONGODWIN/restaurant-admin-reservation" class="project-link code" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.94-2.61c-.9-.38-1.5-.58-1.5-.58a4.5 4.5 0 0 0-1.5.58A3.37 3.37 0 0 0 9 19.13V22m0 0h6m-6 0h6"/>
                   </svg>
@@ -89,9 +247,9 @@
             <div class="project-tech-badge">PHP/SQL</div>
           </div>
           <div class="project-content">
-            <h3>Système de Login Restaurant</h3>
+            <h3>Application Restaurant</h3>
             <p class="project-description">
-              Tableau de bord de gestion complet pour restaurant avec authentification, réservations, avis clients et interface d'administration.
+              Application de restaurant : menu en ligne, panier, paiement PayPal (sandbox), réservations, avis clients et tableau de bord d'administration.
             </p>
             <div class="project-features">
               <span class="feature-tag">🔐 Authentification</span>
@@ -112,10 +270,10 @@
         <!-- Projet Frontend -->
         <div class="project-card" data-tech="frontend" data-aos="fade-up" data-aos-delay="300">
           <div class="project-image">
-            <img src="Capture d'écran 2025-06-29 111644.png" alt="Landing Page Responsive">
+            <img loading="lazy" src="images/projets/todo-list.png" alt="Application Todo List en JavaScript">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="projet fil rouge/index 2 (1).html" class="project-link demo" target="_blank">
+                <a href="projet-fil-rouge/index.html" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -123,7 +281,7 @@
                   </svg>
                   <span>Démo</span>
                 </a>
-                <a href="https://github.com/DOVONGODWIN/TODO/blob/main/projet%20fil%20rouge/maison.js" class="project-link code" target="_blank">
+                <a href="https://github.com/DOVONGODWIN/TODO/blob/main/projet%20fil%20rouge/maison.js" class="project-link code" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.94-2.61c-.9-.38-1.5-.58-1.5-.58a4.5 4.5 0 0 0-1.5.58A3.37 3.37 0 0 0 9 19.13V22m0 0h6m-6 0h6"/>
                   </svg>
@@ -134,9 +292,9 @@
             <div class="project-tech-badge">Frontend</div>
           </div>
           <div class="project-content">
-            <h3>Landing Page Responsive</h3>
+            <h3>Todo List JavaScript</h3>
             <p class="project-description">
-              Page d'accueil moderne et responsive avec liste dynamique, animations fluides et design adaptatif.
+              Gestionnaire de tâches en JavaScript natif : ajout, recherche et suppression de tâches, avec une interface responsive.
             </p>
             <div class="project-features">
               <span class="feature-tag">📱 Responsive</span>
@@ -150,14 +308,13 @@
             </div>
           </div>
         </div>
-
-        <!-- Projet Frontend/PHP -->
-        <div class="project-card" data-tech="frontend" data-aos="fade-up" data-aos-delay="400">
+        <!-- Projet Frontend react -->
+        <div class="project-card" data-tech="react" data-aos="fade-up" data-aos-delay="300">
           <div class="project-image">
-            <img src="WhatsApp Image 2025-05-29 à 17.10.24_c80291e9.jpg" alt="Site Vitrine Moderne">
+            <img loading="lazy" src="images/projets/react-landing.png" alt="Todo List en React">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="PARTIEL/ACCUEIL.php" class="project-link demo" target="_blank">
+                <a href="React FIRST/demo/index.html" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -165,7 +322,44 @@
                   </svg>
                   <span>Démo</span>
                 </a>
-                <a href="https://github.com/DOVONGODWIN/Site-vitrine-moderne-en-HTML-CSS-JS-et-php-Formulaire-de-contact-" class="project-link code" target="_blank">
+              </div>
+            </div>
+            <div class="project-tech-badge">React</div>
+          </div>
+          <div class="project-content">
+            <h3>Todo List React</h3>
+            <p class="project-description">
+              Application de liste de tâches développée avec React et TypeScript, construite avec Vite.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">📱 Responsive</span>
+              <span class="feature-tag">✨ Animations</span>
+              <span class="feature-tag">📋 Liste dynamique</span>
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">React</span>
+              <span class="tech-item">TypeScript</span>
+              <span class="tech-item">Vite</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Projet Frontend/PHP -->
+        <div class="project-card" data-tech="frontend" data-aos="fade-up" data-aos-delay="400">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/site-vitrine.jpg" alt="Site Vitrine Moderne">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="PARTIEL/ACCUEIL.php" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15,3 21,3 21,9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Démo</span>
+                </a>
+                <a href="https://github.com/DOVONGODWIN/Site-vitrine-moderne-en-HTML-CSS-JS-et-php-Formulaire-de-contact-" class="project-link code" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.94-2.61c-.9-.38-1.5-.58-1.5-.58a4.5 4.5 0 0 0-1.5.58A3.37 3.37 0 0 0 9 19.13V22m0 0h6m-6 0h6"/>
                   </svg>
@@ -197,10 +391,10 @@
         <!-- Projet WordPress -->
         <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="500">
           <div class="project-image">
-            <img src="WhatsApp Image 2025-05-29 à 09.59.05_f8e5a9ad.jpg" alt="Site Blog WordPress">
+            <img loading="lazy" src="images/projets/blog-wordpress.jpg" alt="Site Blog WordPress">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="https://www.messanhgodwin-dovon.mds-angers.yt/www.nikkicoachingtherapie.com/index.php/accueil/" class="project-link demo" target="_blank">
+                <a href="https://www.messanhgodwin-dovon.mds-angers.yt/www.nikkicoachingtherapie.com/index.php/accueil/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -233,52 +427,14 @@
           </div>
         </div>
 
-        <!-- Projet WordPress BDS -->
-        <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="600">
-          <div class="project-image">
-            <img src="WhatsApp Image 2025-05-29 à 16.56.54_e9c8c4ad.jpg" alt="Site BDS Win Sport School">
-            <div class="project-overlay">
-              <div class="project-links">
-                <a href="https://www.messanhgodwin-dovon.mds-angers.yt/www.win-sport--school.com/index.php/accueil/" class="project-link demo" target="_blank">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                    <polyline points="15,3 21,3 21,9"/>
-                    <line x1="10" y1="14" x2="21" y2="3"/>
-                  </svg>
-                  <span>Démo</span>
-                </a>
-              </div>
-            </div>
-            <div class="project-tech-badge">WordPress</div>
-          </div>
-          <div class="project-content">
-            <h3>Site BDS Win Sport School</h3>
-            <p class="project-description">
-              Site institutionnel privé avec connexion sécurisée pour le Bureau des Sports, gestion des accès restreints et communication interne.
-            </p>
-            <div class="project-features">
-              <span class="feature-tag">🔐 Connexion sécurisée</span>
-              <span class="feature-tag">📄 Pages privées</span>
-              <span class="feature-tag">💬 Actualités</span>
-              <span class="feature-tag">📧 Formulaires</span>
-            </div>
-            <div class="project-tech-stack">
-              <span class="tech-item">WordPress</span>
-              <span class="tech-item">Elementor</span>
-              <span class="tech-item">HTML</span>
-              <span class="tech-item">CSS</span>
-              <span class="tech-item">PHP</span>
-            </div>
-          </div>
-        </div>
 
         <!-- Projet WordPress Triple Gem -->
         <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="700">
           <div class="project-image">
-            <img src="WhatsApp Image 2025-05-29 à 17.05.56_e9c8c4ad.jpg" alt="Site Triple Gem">
+            <img loading="lazy" src="images/projets/triple-gem.jpg" alt="Site Triple Gem">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="https://www.messanhgodwin-dovon.mds-angers.yt/wwwtriplegem.com/" class="project-link demo" target="_blank">
+                <a href="https://www.messanhgodwin-dovon.mds-angers.yt/wwwtriplegem.com/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -309,13 +465,79 @@
           </div>
         </div>
 
+
+
+
+         <!-- Projet Figma2 -->
+        <div class="project-card" data-tech="figma" data-aos="fade-up" data-aos-delay="700">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/maquette-figma-nexaa.png" alt="Maquette e-commerce Nexaa sur Figma">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://www.figma.com/proto/0tapNLbFrgAV6nEOj8woJv/Untitled?page-id=0%3A1&node-id=139-3444&viewport=1425%2C-1747%2C0.5&t=15wY5Jr3jSBmUSnd-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=104%3A820" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15,3 21,3 21,9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>Démo</span>
+                </a>
+              </div>
+            </div>
+            <div class="project-tech-badge">Figma</div>
+          </div>
+          <div class="project-content">
+            <h3>Maquette e-commerce Nexaa</h3>
+            <p class="project-description">
+              Maquette Figma d'un site e-commerce, avec prototype interactif et motion design.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">🎨 Design moderne</span>
+              <span class="feature-tag">📱 Responsive</span>
+              <span class="feature-tag">⚡ Performance</span>
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">Figma</span>
+              <span class="tech-item">Illustrator</span>
+              <span class="tech-item">Photoshop</span>
+            </div>
+          </div>
+        </div>
+
+
+
+ <!-- Projet PhotoShop -->
+        <div class="project-card" data-tech="design" data-aos="fade-up" data-aos-delay="700">
+          <div class="project-image">
+            <img loading="lazy" src="images/projets/magazine-bazzar-vog.png" alt="Couverture de magazine Bazzar Vog">
+            <div class="project-tech-badge">Photoshop</div>
+          </div>
+          <div class="project-content">
+            <h3>Couverture de magazine Bazzar Vog</h3>
+            <p class="project-description">
+             Design de couverture de magazine avec Photoshop, mettant en avant des compétences en retouche photo, composition et création visuelle.
+            </p>
+            <div class="project-features">
+              <span class="feature-tag">🎨 Design moderne</span>
+
+            </div>
+            <div class="project-tech-stack">
+              <span class="tech-item">Illustrator</span>
+              <span class="tech-item">Photoshop</span>
+            </div>
+          </div>
+        </div>
+
+
+
+
         <!-- Projet PHP Calculateur IMC -->
         <div class="project-card" data-tech="php" data-aos="fade-up" data-aos-delay="800">
           <div class="project-image">
-            <img src="WhatsApp Image 2025-05-30 à 21.26.55_e9ae6d8e9.jpg" alt="Calculateur IMC">
+            <img loading="lazy" src="images/projets/calculateur-imc.png" alt="Calculateur IMC">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="DEVOIR/phpd.php" class="project-link demo" target="_blank">
+                <a href="DEVOIR/phpd.php" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -348,6 +570,10 @@
     </div>
   </section>
 
+  
+ 
+  
+
   <!-- Section CTA -->
   <section class="projects-cta">
     <div class="container-modern">
@@ -363,6 +589,22 @@
   </section>
 
   <style>
+    .image-container{
+      display: flex;
+    }
+    .image-container {
+      width: 300px;
+      cursor: pointer;
+    }
+
+    .image-container img {
+      width: 100%;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    
+
     /* Reset et base */
     * {
       margin: 0;
@@ -915,5 +1157,3 @@
   </script>
 
   <?php include 'footer.php'; ?>
-</body>
-</html>

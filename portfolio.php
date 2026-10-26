@@ -1,16 +1,7 @@
-<?php include 'header.php'; ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio de Dovon Godwin</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-</head>
-<body>
+<?php
+$pageTitle = "Godwin Dovon - Développeur Full-Stack";
+include "header.php";
+?>
   <!-- Hero Section avec Parallax -->
   <section class="hero-modern">
     <div class="hero-background">
@@ -162,7 +153,7 @@
       <div class="skills-grid-modern">
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="200">
           <div class="skill-icon">
-            <img src="ef7357f8edafba5276df1698801ce94a-removebg-preview.png" alt="HTML/CSS/JS">
+            <img src="images/skills/html-css-js.png" alt="HTML/CSS/JS">
           </div>
           <h3>HTML, CSS & JS</h3>
           <div class="skill-bar">
@@ -173,7 +164,7 @@
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="300">
           <div class="skill-icon">
-            <img src="b1ae239e57d0569868ec86c7a7b53c79-removebg-preview.png" alt="PHP/SQL">
+            <img src="images/skills/php-sql.png" alt="PHP/SQL">
           </div>
           <h3>PHP & SQL</h3>
           <div class="skill-bar">
@@ -184,9 +175,9 @@
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="400">
           <div class="skill-icon">
-            <img src="nodejs-white-web-story.png" alt="Adobe">
+            <img src="images/skills/nodejs.png" alt="Node.js">
           </div>
-          <h3>Node JS </h3>
+          <h3>Node.js</h3>
           <div class="skill-bar">
             <div class="skill-progress" style="width: 85%"></div>
           </div>
@@ -195,7 +186,7 @@
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="500">
           <div class="skill-icon">
-            <img src="react.png" alt="WordPress">
+            <img src="images/skills/react.png" alt="React">
           </div>
           <h3>React</h3>
           <div class="skill-bar">
@@ -206,7 +197,7 @@
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="600">
           <div class="skill-icon">
-            <img src="9730c7b997bdc91dd083ff2a61383815-removebg-preview.png" alt="Git">
+            <img src="images/skills/git.png" alt="Git">
           </div>
           <h3>Git et GitHub</h3>
           <div class="skill-bar">
@@ -217,9 +208,9 @@
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="700">
           <div class="skill-icon">
-            <img src="phython.png" alt="Figma">
+            <img src="images/skills/python.png" alt="Python">
           </div>
-          <h3>python</h3>
+          <h3>Python</h3>
           <div class="skill-bar">
             <div class="skill-progress" style="width: 90%"></div>
           </div>
@@ -446,6 +437,7 @@
       font-family: 'Fira Code', monospace;
       font-size: 1rem;
       line-height: 1.6;
+     
     }
 
     .code-line {
@@ -835,5 +827,3 @@
   </script>
 
   <?php include 'footer.php'; ?>
-</body>
-</html>

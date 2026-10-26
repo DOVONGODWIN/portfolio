@@ -1,16 +1,8 @@
-<?php include 'header.php'; ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact - Dovon Godwin</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-</head>
-<body>
+<?php
+$pageTitle = "Contact - Godwin Dovon";
+$pageDescription = "Contactez Godwin Dovon, développeur full-stack, pour discuter de votre projet web ou design.";
+include "header.php";
+?>
   <!-- Hero Section Contact -->
   <section class="contact-hero">
     <div class="contact-hero-background">
@@ -86,30 +78,41 @@
           </div>
 
           <div class="social-links" data-aos="fade-up" data-aos-delay="500">
-            <h3>Suivez-moi</h3>
+            <h3>Suivez-moi et Télécharger mon CV</h3>
             <div class="social-icons">
-              <a href="https://www.linkedin.com/in/godwin-dovon-mess656/" class="social-icon linkedin" target="_blank">
+              <a href="https://www.linkedin.com/in/godwin-dovon-mess656/" class="social-icon linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                 </svg>
               </a>
-              <a href="https://github.com/DOVONGODWIN" class="social-icon github" target="_blank">
+              <a href="https://github.com/DOVONGODWIN" class="social-icon github" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
               </a>
-            </div>
+              <a href="Godwin_Dovon_CV_2026.pdf" download class="social-icon cv" aria-label="Télécharger mon CV (PDF)">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 16l4-5h-3V4h-2v7H8l4 5zm8 2v2H4v-2h16z"/>
+  </svg>
+</a>
+
+            
+
+   </div>
           </div>
         </div>
 
-        <!-- Formulaire de contact -->
+        
         <div class="contact-form-container" data-aos="fade-left">
+          <!-- Formulaire de contact
           <div class="contact-form-header">
             <h2>Envoyez-moi un message</h2>
             <p>Remplissez le formulaire ci-dessous et je vous répondrai dans les plus brefs délais</p>
           </div>
           
-          <form class="contact-form" id="contactForm" action="send_contact_simple.php" method="POST">
+          <form class="contact-form" id="contactForm" action="send_contact.php" method="POST">
+            <!-- Champ piège anti-spam : invisible pour les humains -->
+            <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
             <div class="form-group">
               <label for="name">Nom complet *</label>
               <input type="text" id="name" name="name" required>
@@ -144,8 +147,13 @@
             </button>
           </form>
         </div>
-      </div>
+      </div> -->
+       <div class="image-container">
+  <img src="images/logo.png"
+       alt="Logo Godwin Dovon">
+</div>
     </div>
+   
   </section>
 
   <!-- Section CTA -->
@@ -163,6 +171,29 @@
   </section>
 
   <style>
+    .image-container {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden; /* très important */
+}
+
+.image-container img {
+  width: 100%;
+  display: block;
+}
+
+/* Couche noire */
+.image-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(49, 49, 49, 0.38); /* ajuste la transparence ici */
+}
+
     /* Reset et base */
     * {
       margin: 0;
@@ -293,6 +324,7 @@
     /* Section Contact Principale */
     .contact-main {
       padding: 6rem 0;
+      justify-content: center;
     }
 
     .container-modern {
@@ -306,6 +338,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
       align-items: start;
+      width: 100%;
     }
 
     /* Informations de contact */
@@ -315,6 +348,7 @@
       border-radius: 20px;
       padding: 2.5rem;
       backdrop-filter: blur(10px);
+      width: 100%;
     }
 
     .contact-info-header {
@@ -738,9 +772,10 @@
     });
 
     // Gestion du formulaire
+    // Le formulaire peut être masqué (commenté dans le HTML) : on ne branche l'envoi que s'il existe
     const contactForm = document.getElementById('contactForm');
-    
-    contactForm.addEventListener('submit', function(e) {
+
+    if (contactForm) contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
       // Récupération des données du formulaire
@@ -753,7 +788,7 @@
       submitBtn.disabled = true;
       
       // Envoi réel du formulaire via AJAX
-      fetch('send_contact_simple.php', {
+      fetch('send_contact.php', {
         method: 'POST',
         body: formData
       })
@@ -791,10 +826,12 @@
       notification.className = `notification notification-${type}`;
       notification.innerHTML = `
         <div class="notification-content">
-          <span class="notification-message">${message}</span>
+          <span class="notification-message"></span>
           <button class="notification-close">&times;</button>
         </div>
       `;
+      // textContent : le message vient du serveur, on ne l'interprète pas comme du HTML
+      notification.querySelector('.notification-message').textContent = message;
       
       // Ajout au DOM
       document.body.appendChild(notification);
@@ -848,5 +885,3 @@
   </script>
 
   <?php include 'footer.php'; ?>
-</body>
-</html>

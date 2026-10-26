@@ -1,12 +1,7 @@
 <?php
-//session_start(); // Décommentez cette ligne
+if (!defined('APP_ROUTER')) { header('Location: index.php?page=ajouter_produit'); exit; }
 
-require_once 'includes/db.php';
 require_once 'includes/functions.php';
-
-// Débogage
-//echo "User ID: " . ($_SESSION['user_id'] ?? 'Not set') . "<br>";
-//echo "Is Admin: " . (is_admin($_SESSION['user_id'] ?? 0) ? 'Yes' : 'No') . "<br>";
 
 /**
  * Fonction pour ajouter un nouveau produit
@@ -40,75 +35,38 @@ function add_product($name, $description, $price, $image, $category) {
 
 // Vérifier si l'utilisateur est connecté et est un administrateur
 if (!isset($_SESSION['user_id']) || !is_admin($_SESSION['user_id'])) {
-    echo "Redirection vers la page d'accueil..."; // Débogage
     header('Location: index.php');
     exit();
 }
 
-//echo "Accès administrateur confirmé"; // Débogage
-
 $message = '';
+$success = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo "Formulaire soumis<br>";
-    var_dump($_POST);
-    var_dump($_FILES);
+    require_csrf();
 
-    $name = $_POST['name'] ?? '';
-    $description = $_POST['description'] ?? '';
+    $name = trim($_POST['name'] ?? '');
+    $description = trim($_POST['description'] ?? '');
     $price = $_POST['price'] ?? '';
-    $category = $_POST['category'] ?? '';
+    $category = trim($_POST['category'] ?? '');
 
-    // echo "Données du formulaire : $name, $price, $category<br>";
-
-    // Validation simple
-    if (empty($name) || empty($price)) {
-        $message = "Le nom et le prix sont obligatoires.";
+    if ($name === '' || !is_numeric($price) || $price <= 0) {
+        $message = "Le nom et un prix valide sont obligatoires.";
     } else {
-        // Traitement de l'image
         $image = '';
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
-            $filename = $_FILES["image"]["name"];
-            $filetype = $_FILES["image"]["type"];
-            $filesize = $_FILES["image"]["size"];
-
-            // Vérifier l'extension du fichier
-            $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            if (!array_key_exists($ext, $allowed)) {
-                $message = "Erreur : Veuillez sélectionner un format de fichier valide.";
+        try {
+            if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $image = save_uploaded_image($_FILES['image'], 'images/menu');
             }
 
-            // Vérifier la taille du fichier - 5MB maximum
-            $maxsize = 5 * 1024 * 1024;
-            if ($filesize > $maxsize) {
-                $message = "Erreur : La taille du fichier est supérieure à la limite autorisée.";
-            }
-
-            // Vérifier le type MIME du fichier
-            if (in_array($filetype, $allowed)) {
-                // Vérifier si le fichier existe avant de le télécharger.
-                if (file_exists("images/menu/" . $_FILES["image"]["name"])) {
-                    $message = $_FILES["image"]["name"] . " existe déjà.";
-                } else {
-                    move_uploaded_file($_FILES["image"]["tmp_name"], "images/menu/" . $_FILES["image"]["name"]);
-                    $image = "images/menu/" . $_FILES["image"]["name"];
-                }
-            } else {
-                $message = "Erreur : Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer.";
-            }
-        }
-
-        if (empty($message)) {
-            echo "Tentative d'insertion dans la base de données...<br>";
-            // Insérer le produit dans la base de données
-            if (add_product($name, $description, $price, $image, $category)) {
-                echo "Insertion réussie<br>";
+            if (add_product($name, $description, (float) $price, $image, $category)) {
+                $success = true;
                 $message = "Le produit a été ajouté avec succès.";
             } else {
-                echo "Échec de l'insertion<br>";
                 $message = "Une erreur est survenue lors de l'ajout du produit. Veuillez réessayer.";
             }
+        } catch (RuntimeException $ex) {
+            $message = $ex->getMessage();
         }
     }
 }
@@ -254,11 +212,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="add-product-container">
         <h2>Ajouter un produit</h2>
         <?php if (!empty($message)) : ?>
-            <div class="message <?php echo strpos($message, 'succès') !== false ? 'success' : 'error'; ?>">
-                <?php echo $message; ?>
+            <div class="message <?php echo $success ? 'success' : 'error'; ?>">
+                <?php echo e($message); ?>
             </div>
         <?php endif; ?>
         <form action="index.php?page=ajouter_produit" method="post" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
             <div class="inputboite">
                 <input type="text" id="name" name="name" required>
                 <label for="name">Nom du produit</label>

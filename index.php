@@ -1,14 +1,20 @@
 <?php
-session_start();
-include 'includes/db.php';
+// Tampon de sortie : les pages incluses peuvent encore faire des redirections (header Location)
+ob_start();
+
+// Les fichiers de pages vérifient cette constante pour refuser l'accès direct
+define('APP_ROUTER', true);
+
+require_once 'includes/functions.php';
+start_session();
 require_once 'includes/cart_functions.php';
-include 'includes/functions.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo csrf_token(); ?>">
     <title>Resto.</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -39,51 +45,35 @@ include 'includes/functions.php';
         'admin_dashboard' => 'admin_dashboard.php'
     ];
 
+    // Pages réservées aux utilisateurs connectés / aux administrateurs
+    $login_required = ['panier', 'profile', 'mes_commandes', 'detail_commande', 'confirmation', 'reservation'];
+    $admin_required = ['ajouter_produit', 'modifier_produit', 'admin_dashboard'];
+
     // Récupération de la page demandée, avec 'accueil' comme valeur par défaut
     $page = $_GET['page'] ?? 'accueil';
+    if (!is_string($page) || !array_key_exists($page, $allowed_pages)) {
+        $page = 'accueil';
+    }
 
-    // Vérification de l'existence de la page et inclusion du fichier correspondant
-    if (array_key_exists($page, $allowed_pages)) {
-        $file_to_include = $allowed_pages[$page];
-        if (file_exists($file_to_include)) {
-            if ($page === 'ajouter_produit' && (!isset($_SESSION['user_id']) || !is_admin($_SESSION['user_id']))) {
-                include $allowed_pages['accueil']; // Redirection vers l'accueil si non admin
-            } elseif ($page === 'detail_produit') {
-                if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-                    include $file_to_include;
-                } else {
-                    include $allowed_pages['menu']; // Redirection vers le menu si pas d'ID valide
-                }
-            } elseif ($page === 'detail_commande') {
-                if (!isset($_SESSION['user_id'])) {
-                    include $allowed_pages['login'];
-                } elseif (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-                    include $allowed_pages['mes_commandes'];
-                } else {
-                    $order_id = $_GET['id'];
-                    $user_id = $_SESSION['user_id'];
-                    if (can_view_order($user_id, $order_id)) {
-                        include $file_to_include;
-                    } else {
-                        include $allowed_pages['mes_commandes'];
-                    }
-                }
-            } elseif ($page === 'confirmation') {
-                if (!isset($_SESSION['user_id']) || !isset($_GET['order_id'])) {
-                    include $allowed_pages['accueil'];
-                } else {
-                    include $file_to_include;
-                }
-            } elseif ($page === 'admin_dashboard' && (!isset($_SESSION['user_id']) || !is_admin($_SESSION['user_id']))) {
-                include $allowed_pages['accueil']; // Redirection vers l'accueil si non admin
-            } else {
-                include $file_to_include;
-            }
-        } else {
-            include '404.php'; // Assurez-vous d'avoir une page 404.php
-        }
+    $user_id = $_SESSION['user_id'] ?? null;
+
+    if (in_array($page, $admin_required, true) && (!$user_id || !is_admin($user_id))) {
+        $page = 'accueil';
+    } elseif (in_array($page, $login_required, true) && !$user_id) {
+        $page = 'login';
+    } elseif ($page === 'detail_produit' && !ctype_digit((string) ($_GET['id'] ?? ''))) {
+        $page = 'menu';
+    } elseif ($page === 'detail_commande'
+        && (!ctype_digit((string) ($_GET['id'] ?? '')) || !can_view_order($user_id, (int) $_GET['id']))) {
+        $page = 'mes_commandes';
+    } elseif ($page === 'confirmation' && !ctype_digit((string) ($_GET['order_id'] ?? ''))) {
+        $page = 'accueil';
+    }
+
+    if (file_exists($allowed_pages[$page])) {
+        include $allowed_pages[$page];
     } else {
-        include $allowed_pages['accueil'];
+        include '404.php';
     }
     ?>
     </main>
@@ -93,3 +83,4 @@ include 'includes/functions.php';
     <script src="js/script.js"></script>
 </body>
 </html>
+<?php ob_end_flush(); ?>

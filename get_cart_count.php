@@ -1,8 +1,7 @@
 <?php
-session_start();
+require_once 'includes/functions.php';
+start_session();
 require_once 'includes/cart_functions.php';
 
-$cart = getCartContents();
-$count = array_sum($cart);
-
-echo json_encode(['count' => $count]);
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode(['count' => array_sum(getCartContents())]);

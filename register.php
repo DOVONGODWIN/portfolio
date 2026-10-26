@@ -1,13 +1,10 @@
+<?php if (!defined('APP_ROUTER')) { header('Location: index.php?page=register'); exit; } ?>
 <div class="auth-container">
     <div class="register">
         <h2>Inscription</h2>
-        <?php
-        if (isset($_SESSION['error'])) {
-            echo '<div class="error-message">' . $_SESSION['error'] . '</div>';
-            unset($_SESSION['error']);
-        }
-        ?>
+        <?php flash_messages(); ?>
         <form action="register_process.php" method="post">
+            <?php echo csrf_field(); ?>
             <div class="inputboite">
                 <input type="text" name="username" required>
                 <label>Nom d'utilisateur</label>
@@ -17,11 +14,11 @@
                 <label>Email</label>
             </div>
             <div class="inputboite">
-                <input type="password" name="password" required>
+                <input type="password" name="password" autocomplete="new-password" minlength="8" required>
                 <label>Mot de passe</label>
             </div>
             <div class="inputboite">
-                <input type="password" name="confirm_password" required>
+                <input type="password" name="confirm_password" autocomplete="new-password" minlength="8" required>
                 <label>Confirmer le mot de passe</label>
             </div>
             <input type="submit" value="S'inscrire">
@@ -31,6 +28,3 @@
         </div>
     </div>
 </div>
-<script>
-
-</script>

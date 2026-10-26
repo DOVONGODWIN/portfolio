@@ -1,0 +1,16 @@
+# --- Informations sensibles ---
+includes/config.php
+.env
+.env.*
+
+# --- Fichiers envoyés par les utilisateurs ---
+upload/*
+!upload/.htaccess
+
+# --- Système / éditeur ---
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

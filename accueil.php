@@ -1,3 +1,4 @@
+<?php if (!defined('APP_ROUTER')) { header('Location: index.php?page=accueil'); exit; } ?>
 <style>
     .baniere {
         position: relative;
@@ -6,7 +7,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-image: url('image1.jpeg');
+        background-image: url('175c19f891f4d76b61f5a7dac83ff804.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -199,7 +200,6 @@
 <section id="baniere" class="baniere">
     <div class="contenu">
         <h1>Bienvenue chez <span class="highlight">HS FOOD</span></h1>
-        <h2>Que des plats délicieux</h2>
         <p>Découvrez notre cuisine raffinée et nos saveurs uniques dans une ambiance chaleureuse. Chaque plat est une expérience gustative inoubliable.</p>
         <div class="cta-buttons">
             <a href="index.php?page=menu" class="btn btn1">Découvrir notre menu</a>

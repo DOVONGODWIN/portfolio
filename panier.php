@@ -1,24 +1,12 @@
 <?php
-//session_start();
+if (!defined('APP_ROUTER')) { header('Location: index.php?page=panier'); exit; }
+
 require_once 'includes/cart_functions.php';
 require_once 'includes/functions.php';
 
-$cart = getCartContents();
-$cart_items = [];
-
-foreach ($cart as $product_id => $quantity) {
-    $product = get_product_details($product_id);
-    if ($product) {
-        $cart_items[] = [
-            'id' => $product_id,
-            'name' => $product['name'],
-            'price' => $product['price'],
-            'quantity' => $quantity
-        ];
-    }
-}
-
+$cart_items = get_cart_items(getCartContents());
 $total = calculate_cart_total($cart_items);
+$paypal = app_config()['paypal'];
 ?>
 
 <section class="panier">
@@ -43,12 +31,12 @@ $total = calculate_cart_total($cart_items);
                 <tbody>
                     <?php foreach ($cart_items as $item): ?>
                     <tr>
-                        <td data-label="Produit" class="product-name"><?php echo $item['name']; ?></td>
-                        <td data-label="Prix"><?php echo $item['price']; ?> $</td>
+                        <td data-label="Produit" class="product-name"><?php echo e($item['name']); ?></td>
+                        <td data-label="Prix"><?php echo format_price($item['price']); ?></td>
                         <td data-label="Quantité">
-                            <input type="number" value="<?php echo $item['quantity']; ?>" min="1" data-id="<?php echo $item['id']; ?>" class="quantity-input">
+                            <input type="number" value="<?php echo $item['quantity']; ?>" min="1" max="<?php echo MAX_CART_QUANTITY; ?>" data-id="<?php echo $item['id']; ?>" class="quantity-input">
                         </td>
-                        <td data-label="Total"><?php echo $item['price'] * $item['quantity']; ?> $</td>
+                        <td data-label="Total"><?php echo format_price($item['price'] * $item['quantity']); ?></td>
                         <td data-label="Action">
                             <button class="remove-item" data-id="<?php echo $item['id']; ?>">Supprimer</button>
                         </td>
@@ -57,7 +45,7 @@ $total = calculate_cart_total($cart_items);
                 </tbody>
             </table>
             <div class="total">
-                Total: <span id="cart-total"><?php echo $total; ?></span> $
+                Total : <span id="cart-total"><?php echo format_price($total); ?></span>
             </div>
             <button id="checkout-btn" class="btn-primary">Passer la commande</button>
             <div id="paypal-button-container" style="display: none;"></div>
@@ -65,117 +53,66 @@ $total = calculate_cart_total($cart_items);
     </div>
 </section>
 
-<script src="https://www.paypal.com/sdk/js?client-id=AZQMtRuAFe8ouLGcp7N8gHzOp9y54gS4kHFkeGE_7GBXKxGVe9e13CF8S62pqtUbvhqLjbnsp_qawC10&currency=USD"></script>
+<?php if (!empty($cart_items)): ?>
+<script src="https://www.paypal.com/sdk/js?client-id=<?php echo urlencode($paypal['client_id']); ?>&amp;currency=<?php echo urlencode($paypal['currency']); ?>"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const quantityInputs = document.querySelectorAll('.quantity-input');
-    const removeButtons = document.querySelectorAll('.remove-item');
     const checkoutBtn = document.getElementById('checkout-btn');
     const paypalContainer = document.getElementById('paypal-button-container');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-    quantityInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            updateCartItemQuantity(this.dataset.id, this.value);
-        });
+    checkoutBtn.addEventListener('click', function() {
+        // Vérifier si l'utilisateur a une adresse et un numéro de téléphone
+        fetch('check_user_info.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.hasInfo) {
+                    checkoutBtn.style.display = 'none';
+                    paypalContainer.style.display = 'block';
+                } else {
+                    window.location.href = 'index.php?page=profile&message=complete_info';
+                }
+            });
     });
 
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            removeCartItem(this.dataset.id);
-        });
-    });
-
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', function() {
-            // Vérifier si l'utilisateur a une adresse et un numéro de téléphone
-            fetch('check_user_info.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.hasInfo) {
-                        // L'utilisateur a les informations nécessaires, continuer avec le paiement
-                        checkoutBtn.style.display = 'none';
-                        if (paypalContainer) {
-                            paypalContainer.style.display = 'block';
-                        }
-                    } else {
-                        // Rediriger l'utilisateur vers la page de profil
-                        window.location.href = 'index.php?page=profile&message=complete_info';
-                    }
-                });
-        });
-    }
-
-    function updateCartItemQuantity(productId, quantity) {
-        fetch('update_cart_quantity.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `product_id=${productId}&quantity=${quantity}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Erreur lors de la mise à jour de la quantité');
-            }
-        });
-    }
-
-    function removeCartItem(productId) {
-        fetch('remove_from_cart.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `product_id=${productId}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Erreur lors de la suppression de l\'article');
-            }
-        });
-    }
-
+    // Le montant est calculé côté serveur à partir du panier en session : rien n'est envoyé depuis la page
     paypal.Buttons({
-        createOrder: function(data, actions) {
+        createOrder: function() {
             return fetch('create_paypal_order.php', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    cart_items: <?php echo json_encode($cart_items); ?>
-                })
+                method: 'POST',
+                headers: { 'X-CSRF-Token': csrfToken }
             }).then(function(res) {
                 return res.json();
             }).then(function(orderData) {
+                if (!orderData.id) {
+                    throw new Error(orderData.message || 'Impossible de créer la commande');
+                }
                 return orderData.id;
             });
         },
-        onApprove: function(data, actions) {
+        onApprove: function(data) {
             return fetch('capture_paypal_order.php', {
-                method: 'post',
+                method: 'POST',
                 headers: {
-                    'content-type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken
                 },
-                body: JSON.stringify({
-                    orderID: data.orderID
-                })
+                body: JSON.stringify({ orderID: data.orderID })
             }).then(function(res) {
                 return res.json();
             }).then(function(orderData) {
                 if (orderData.success) {
-                    window.location.href = 'index.php?page=confirmation&order_id=' + orderData.id;
+                    window.location.href = orderData.redirect;
                 } else {
-                    alert('Une erreur est survenue lors du traitement de votre commande.');
+                    alert(orderData.message || 'Une erreur est survenue lors du traitement de votre commande.');
                 }
             });
+        },
+        onError: function(err) {
+            console.error(err);
+            alert('Le paiement n\'a pas pu aboutir. Veuillez réessayer.');
         }
     }).render('#paypal-button-container');
 });
 </script>
+<?php endif; ?>

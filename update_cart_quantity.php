@@ -1,12 +1,16 @@
 <?php
-session_start();
+require_once 'includes/functions.php';
+start_session();
 require_once 'includes/cart_functions.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id']) && isset($_POST['quantity'])) {
-    $product_id = $_POST['product_id'];
-    $quantity = intval($_POST['quantity']);
-    updateCartQuantity($product_id, $quantity);
-    echo json_encode(['success' => true]);
-} else {
+header('Content-Type: application/json; charset=utf-8');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['product_id'], $_POST['quantity'])) {
+    http_response_code(400);
     echo json_encode(['success' => false]);
+    exit;
 }
+require_csrf(true);
+
+updateCartQuantity($_POST['product_id'], $_POST['quantity']);
+echo json_encode(['success' => true]);

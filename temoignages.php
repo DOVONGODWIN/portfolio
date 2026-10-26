@@ -1,10 +1,18 @@
 <?php
-//session_start();
-require_once 'includes/db.php';
+if (!defined('APP_ROUTER')) { header('Location: index.php?page=temoignages'); exit; }
+
 require_once 'includes/functions.php';
 
 // Affichage des témoignages
-$testimonials = get_approved_testimonials();
+$testimonials = get_approved_testimonials() ?: [];
+
+$status_messages = [
+    'success' => ['success-message', 'Merci ! Votre témoignage sera publié après validation.'],
+    'invalid' => ['error-message', 'Veuillez saisir un commentaire et une note entre 1 et 5.'],
+    'image'   => ['error-message', "L'image n'est pas valide (JPG, PNG, GIF ou WebP, 5 Mo maximum)."],
+    'error'   => ['error-message', "Une erreur est survenue lors de l'ajout du témoignage."],
+];
+$status = $status_messages[$_GET['status'] ?? ''] ?? null;
 ?>
 
 <section id="temoignage" class="temoignage">
@@ -16,10 +24,15 @@ $testimonials = get_approved_testimonials();
         <?php foreach ($testimonials as $testimonial): ?>
         <div class="box">
             <div class="imbox">
-                <img src="<?php echo get_user_image($testimonial['user_id']); ?>" alt="Photo de profil">
+                <?php $image = get_user_image($testimonial['user_id']); ?>
+                <?php if ($image && file_exists($image)): ?>
+                    <img src="<?php echo e($image); ?>" alt="Photo de profil">
+                <?php else: ?>
+                    <img src="images/utilisateur.png" alt="Photo de profil">
+                <?php endif; ?>
             </div>
             <div class="text">
-                <p><?php echo htmlspecialchars($testimonial['content']); ?></p>
+                <p><?php echo e($testimonial['content']); ?></p>
                 <div class="rating">
                     <?php
                     for ($i = 1; $i <= 5; $i++) {
@@ -27,19 +40,24 @@ $testimonials = get_approved_testimonials();
                     }
                     ?>
                 </div>
-                <h3><?php echo get_username($testimonial['user_id']); ?></h3>
+                <h3><?php echo e(get_username($testimonial['user_id'])); ?></h3>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
+
+    <?php if ($status): ?>
+        <div class="<?php echo $status[0]; ?>"><?php echo e($status[1]); ?></div>
+    <?php endif; ?>
 
     <?php if (isset($_SESSION['user_id'])): ?>
     <!-- Formulaire d'ajout de témoignage -->
     <div class="add-testimonial">
         <h3>Partagez votre expérience</h3>
         <form action="add_testimonial.php" method="post" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
             <div class="inputboite">
-                <textarea name="content" placeholder="Votre commentaire" required></textarea>
+                <textarea name="content" placeholder="Votre commentaire" maxlength="2000" required></textarea>
             </div>
             <div class="inputboite">
                 <select name="rating" required>
@@ -52,7 +70,7 @@ $testimonials = get_approved_testimonials();
                 </select>
             </div>
             <div class="inputboite">
-                <input type="file" name="image" accept="image/*">
+                <input type="file" name="image" accept="image/jpeg,image/png,image/gif,image/webp">
             </div>
             <div class="inputboite">
                 <input type="submit" value="Ajouter votre témoignage">
@@ -60,6 +78,6 @@ $testimonials = get_approved_testimonials();
         </form>
     </div>
     <?php else: ?>
-    <p>Connectez-vous pour laisser un témoignage.</p>
+    <p><a href="index.php?page=login">Connectez-vous</a> pour laisser un témoignage.</p>
     <?php endif; ?>
 </section>

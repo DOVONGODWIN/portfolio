@@ -1,14 +1,12 @@
 <?php
-session_start();
 require_once 'includes/functions.php';
+start_session();
+
+header('Content-Type: application/json; charset=utf-8');
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['hasInfo' => false]);
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-$hasInfo = user_has_address_and_phone($user_id);
-
-echo json_encode(['hasInfo' => $hasInfo]);
-?>
+echo json_encode(['hasInfo' => user_has_address_and_phone($_SESSION['user_id'])]);

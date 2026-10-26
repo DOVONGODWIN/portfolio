@@ -1,8 +1,7 @@
 <?php
 // Démarrer la session si elle n'est pas déjà démarrée
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once 'includes/functions.php';
+start_session();
 
 // Détruire toutes les variables de session
 $_SESSION = array();

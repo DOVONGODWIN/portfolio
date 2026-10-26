@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once 'includes/db.php';
 require_once 'includes/functions.php';
+start_session();
 
 /**
  * Fonction pour ajouter un témoignage
@@ -47,58 +46,35 @@ function add_testimonial($user_id, $content, $rating, $image_path = null) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    
-    // Vérification et nettoyage des entrées
-    $content = isset($_POST['content']) ? trim($_POST['content']) : null;
-    $rating = isset($_POST['rating']) ? intval($_POST['rating']) : null;
-    
-    // Validation des données
-    if (empty($content) || $rating === null || $rating < 1 || $rating > 5) {
-        die("Erreur : Données invalides. Assurez-vous de remplir tous les champs correctement.");
-    }
-    
-    // Traitement de l'image
-    $image_path = null;
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
-        $filename = $_FILES["image"]["name"];
-        $filetype = $_FILES["image"]["type"];
-        $filesize = $_FILES["image"]["size"];
-
-        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        if (!array_key_exists($ext, $allowed)) {
-            die("Erreur : Format de fichier invalide.");
-        }
-
-        $maxsize = 5 * 1024 * 1024;
-        if ($filesize > $maxsize) {
-            die("Erreur : Taille de fichier trop grande.");
-        }
-
-        if (in_array($filetype, $allowed)) {
-            $upload_dir = "upload/";
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-            $image_path = $upload_dir . uniqid() . "." . $ext;
-            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $image_path)) {
-                die("Erreur : Problème lors du téléchargement de l'image.");
-            }
-        } else {
-            die("Erreur : Il y a eu un problème de téléchargement de votre fichier.");
-        }
-    }
-
-    // Ajout du témoignage
-    if (add_testimonial($user_id, $content, $rating, $image_path)) {
-        header("Location: index.php?page=temoignages&status=success");
-        exit();
-    } else {
-        die("Erreur lors de l'ajout du témoignage.");
-    }
-} else {
-    die("Accès non autorisé ou utilisateur non connecté.");
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_id'])) {
+    header('Location: index.php?page=login');
+    exit();
 }
-?>
+require_csrf();
+
+$user_id = $_SESSION['user_id'];
+
+// Vérification et nettoyage des entrées
+$content = trim($_POST['content'] ?? '');
+$rating = filter_var($_POST['rating'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 5]]);
+
+if ($content === '' || mb_strlen($content) > 2000 || !$rating) {
+    header('Location: index.php?page=temoignages&status=invalid');
+    exit();
+}
+
+// Traitement de l'image (optionnelle)
+$image_path = null;
+if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+    try {
+        $image_path = save_uploaded_image($_FILES['image'], 'upload');
+    } catch (RuntimeException $ex) {
+        header('Location: index.php?page=temoignages&status=image');
+        exit();
+    }
+}
+
+// Ajout du témoignage
+$status = add_testimonial($user_id, $content, $rating, $image_path) ? 'success' : 'error';
+header("Location: index.php?page=temoignages&status=$status");
+exit();

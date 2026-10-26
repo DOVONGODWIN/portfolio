@@ -1,19 +1,16 @@
+<?php if (!defined('APP_ROUTER')) { header('Location: index.php?page=login'); exit; } ?>
 <div class="auth-container">
     <div class="login">
         <h2>Connexion</h2>
-        <?php
-        if (isset($_SESSION['error'])) {
-            echo '<p class="error">' . $_SESSION['error'] . '</p>';
-            unset($_SESSION['error']);
-        }
-        ?>
+        <?php flash_messages(); ?>
         <form action="login_process.php" method="post">
+            <?php echo csrf_field(); ?>
             <div class="inputboite">
-                <input type="text" name="username" required>
+                <input type="text" name="username" autocomplete="username" required>
                 <label>Nom d'utilisateur</label>
             </div>
             <div class="inputboite">
-                <input type="password" name="password" required>
+                <input type="password" name="password" autocomplete="current-password" required>
                 <label>Mot de passe</label>
             </div>
             <input type="submit" value="Se connecter">

@@ -1,65 +1,58 @@
 <?php
-//creat paypal
-session_start();
-require_once 'includes/db.php';
+// Création de la commande PayPal : le montant est recalculé ici à partir du panier en session et des prix en base
 require_once 'includes/functions.php';
+start_session();
+require_once 'includes/cart_functions.php';
 require_once 'get_paypal_token.php';
 
-$cart_items = json_decode(file_get_contents('php://input'), true)['cart_items'];
+header('Content-Type: application/json; charset=utf-8');
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_id'])) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Connectez-vous pour commander.']);
+    exit;
+}
+require_csrf(true);
+
+$user_id = $_SESSION['user_id'];
+$cart_items = get_cart_items(getCartContents());
 $total = calculate_cart_total($cart_items);
 
+if (empty($cart_items) || $total <= 0) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Votre panier est vide.']);
+    exit;
+}
+
 try {
-    $access_token = getPayPalAccessToken();
-
-    // Créer une commande en attente dans votre base de données
-    $user_id = $_SESSION['user_id'];
-    $db_order_id = create_order($user_id, $total, 'pending');
-
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, "https://api-m.sandbox.paypal.com/v2/checkout/orders");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-
-    $payload = json_encode([
+    $result = paypal_post('/v2/checkout/orders', [
         "intent" => "CAPTURE",
         "purchase_units" => [
             [
                 "amount" => [
-                    "currency_code" => "USD",
-                    "value" => $total
+                    "currency_code" => app_config()['paypal']['currency'],
+                    "value" => number_format($total, 2, '.', ''),
                 ],
-                "reference_id" => strval($db_order_id)
-            ]
-        ]
+            ],
+        ],
     ]);
 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-    $headers = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . $access_token
-    ];
-
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    $response = curl_exec($ch);
-    $err = curl_error($ch);
-
-    curl_close($ch);
-
-    if ($err) {
-        throw new Exception('Error: ' . $err);
-    } else {
-        $result = json_decode($response, true);
-        if (isset($result['id'])) {
-            echo json_encode(['id' => $result['id'], 'db_order_id' => $db_order_id]);
-        } else {
-            throw new Exception('Failed to create PayPal order');
-        }
+    if (!isset($result['id'])) {
+        throw new Exception('Failed to create PayPal order');
     }
+
+    // Commande en attente dans la base, avec ses articles au prix du moment
+    $db_order_id = create_order($user_id, $total, 'pending', $result['id']);
+    if (!$db_order_id) {
+        throw new Exception('Failed to save order');
+    }
+    foreach ($cart_items as $item) {
+        add_order_item($db_order_id, $item['id'], $item['quantity'], $item['price']);
+    }
+
+    echo json_encode(['id' => $result['id']]);
 } catch (Exception $e) {
+    error_log('PayPal - création de commande : ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Le paiement est momentanément indisponible.']);
 }

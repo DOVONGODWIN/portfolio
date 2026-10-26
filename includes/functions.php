@@ -1,5 +1,127 @@
 <?php
-require_once 'db.php';
+require_once __DIR__ . '/db.php';
+
+/**
+ * Démarre la session avec des cookies sécurisés (HttpOnly, SameSite)
+ */
+function start_session() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_set_cookie_params([
+            'httponly' => true,
+            'samesite' => 'Lax',
+            'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+        ]);
+        session_start();
+    }
+}
+
+/**
+ * Échappe une valeur pour l'afficher dans du HTML
+ */
+function e($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * Formate un montant en euros
+ */
+function format_price($amount) {
+    return number_format((float) $amount, 2, ',', ' ') . ' €';
+}
+
+/**
+ * Affiche puis efface les messages de succès / d'erreur stockés en session
+ */
+function flash_messages() {
+    foreach (['success' => 'success-message', 'error' => 'error-message'] as $key => $class) {
+        if (!empty($_SESSION[$key])) {
+            echo '<div class="' . $class . '">' . e($_SESSION[$key]) . '</div>';
+            unset($_SESSION[$key]);
+        }
+    }
+}
+
+/**
+ * Jeton anti-CSRF de la session
+ */
+function csrf_token() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+/**
+ * Champ caché à placer dans chaque formulaire POST
+ */
+function csrf_field() {
+    return '<input type="hidden" name="csrf_token" value="' . csrf_token() . '">';
+}
+
+/**
+ * Vérifie le jeton envoyé en POST ou dans l'en-tête X-CSRF-Token (requêtes fetch)
+ */
+function csrf_is_valid() {
+    $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    return is_string($token) && !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+/**
+ * Interrompt la requête si le jeton CSRF est absent ou invalide
+ *
+ * @param bool $json Répondre en JSON (endpoints appelés en fetch)
+ */
+function require_csrf($json = false) {
+    if (csrf_is_valid()) {
+        return;
+    }
+    http_response_code(403);
+    if ($json) {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['success' => false, 'message' => 'Jeton de sécurité invalide. Rechargez la page.']);
+    } else {
+        echo "Jeton de sécurité invalide. Rechargez la page et réessayez.";
+    }
+    exit;
+}
+
+/**
+ * Enregistre un fichier image envoyé par formulaire sous un nom aléatoire
+ *
+ * Le type est vérifié sur le contenu réel du fichier (et non sur le nom ou le type MIME envoyés par le navigateur).
+ *
+ * @param array $file Entrée de $_FILES
+ * @param string $dir Dossier de destination (relatif à la racine de l'application)
+ * @return string Chemin relatif de l'image enregistrée
+ * @throws RuntimeException Si le fichier est invalide
+ */
+function save_uploaded_image($file, $dir) {
+    if (!isset($file['error']) || $file['error'] !== UPLOAD_ERR_OK) {
+        throw new RuntimeException("Le téléchargement de l'image a échoué.");
+    }
+    if ($file['size'] > 5 * 1024 * 1024) {
+        throw new RuntimeException("L'image dépasse la taille maximale de 5 Mo.");
+    }
+
+    $extensions = [IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png', IMAGETYPE_GIF => 'gif', IMAGETYPE_WEBP => 'webp'];
+    $info = @getimagesize($file['tmp_name']);
+    if ($info === false || !isset($extensions[$info[2]])) {
+        throw new RuntimeException("Format d'image non autorisé (JPG, PNG, GIF ou WebP uniquement).");
+    }
+
+    $dir = rtrim($dir, '/');
+    $absolute_dir = dirname(__DIR__) . '/' . $dir;
+    if (!is_dir($absolute_dir)) {
+        mkdir($absolute_dir, 0755, true);
+    }
+
+    $filename = bin2hex(random_bytes(16)) . '.' . $extensions[$info[2]];
+    if (!move_uploaded_file($file['tmp_name'], $absolute_dir . '/' . $filename)) {
+        throw new RuntimeException("Impossible d'enregistrer l'image.");
+    }
+
+    return $dir . '/' . $filename;
+}
 
 /**
  * Fonction pour récupérer tous les éléments du menu
@@ -8,9 +130,10 @@ require_once 'db.php';
  * @param float|null $min_price Prix minimum optionnel
  * @param float|null $max_price Prix maximum optionnel
  * @param string $sort Critère de tri (par défaut 'name')
+ * @param string $category Catégorie optionnelle
  * @return array|false Retourne un tableau d'éléments du menu ou false en cas d'échec
  */
-function get_menu_items($search = '', $min_price = null, $max_price = null, $sort = 'name') {
+function get_menu_items($search = '', $min_price = null, $max_price = null, $sort = 'name', $category = '') {
     $connx = connexionDB();
     
     $sql = "SELECT * FROM menu_items WHERE 1=1";
@@ -36,7 +159,13 @@ function get_menu_items($search = '', $min_price = null, $max_price = null, $sor
         $types .= 'd';
         $params[] = &$max_price;
     }
-    
+
+    if (!empty($category)) {
+        $sql .= " AND category = ?";
+        $types .= 's';
+        $params[] = &$category;
+    }
+
     switch ($sort) {
         case 'price_asc':
             $sql .= " ORDER BY price ASC";
@@ -204,7 +333,31 @@ function calculate_cart_total($cart_items) {
     foreach ($cart_items as $item) {
         $total += $item['price'] * $item['quantity'];
     }
-    return $total;
+    return round($total, 2);
+}
+
+/**
+ * Construit le détail du panier à partir de la session, avec les prix lus en base
+ *
+ * Les prix ne viennent jamais du navigateur : seul l'identifiant et la quantité sont stockés en session.
+ *
+ * @param array $cart Panier de session [id_produit => quantité]
+ * @return array Liste d'articles (id, name, price, quantity)
+ */
+function get_cart_items($cart) {
+    $items = [];
+    foreach ($cart as $product_id => $quantity) {
+        $product = get_product_details((int) $product_id);
+        if ($product && $quantity > 0) {
+            $items[] = [
+                'id' => (int) $product_id,
+                'name' => $product['name'],
+                'price' => (float) $product['price'],
+                'quantity' => (int) $quantity,
+            ];
+        }
+    }
+    return $items;
 }
 
 /**
@@ -367,11 +520,20 @@ function cancel_order($order_id) {
  * @return array|null|false Retourne les détails de la commande, null si non trouvée, ou false en cas d'erreur
  */
 function get_order_details($order_id, $user_id) {
+    // Un administrateur peut consulter toutes les commandes, un client uniquement les siennes
+    $admin = is_admin($user_id);
+
     $connx = connexionDB();
-    
-    $sql = "SELECT * FROM orders WHERE id = ? AND user_id = ?";
-    $stmt = mysqli_prepare($connx, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $order_id, $user_id);
+
+    if ($admin) {
+        $sql = "SELECT * FROM orders WHERE id = ?";
+        $stmt = mysqli_prepare($connx, $sql);
+        mysqli_stmt_bind_param($stmt, 'i', $order_id);
+    } else {
+        $sql = "SELECT * FROM orders WHERE id = ? AND user_id = ?";
+        $stmt = mysqli_prepare($connx, $sql);
+        mysqli_stmt_bind_param($stmt, 'ii', $order_id, $user_id);
+    }
     
     $result = mysqli_stmt_execute($stmt);
     
@@ -492,6 +654,10 @@ function can_cancel_order($user_id, $order_id) {
  * @return bool Retourne true en cas de succès, sinon false
  */
 function update_order_status($order_id, $new_status) {
+    if (!in_array($new_status, ['pending', 'processing', 'completed', 'cancelled'], true)) {
+        return false;
+    }
+
     $connx = connexionDB();
     
     $sql = "UPDATE orders SET status = ? WHERE id = ?";
@@ -695,25 +861,25 @@ function delete_user($user_id) {
  * @return bool Retourne true en cas de succès, sinon false
  */
 function add_promotion($product_id, $discount_percentage) {
+    $discount = max(0, min(90, (float) $discount_percentage));
+
     $connx = connexionDB();
-    
-    // D'abord, récupérez le prix actuel
-    $sql = "SELECT price FROM menu_items WHERE id = ?";
-    $stmt = mysqli_prepare($connx, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $product_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $current_price);
-    mysqli_stmt_fetch($stmt);
-    mysqli_stmt_close($stmt);
-    
-    // Calculez le nouveau prix
-    $new_price = $current_price * (1 - $discount_percentage / 100);
-    
-    // Mettez à jour le prix
-    $sql = "UPDATE menu_items SET price = ? WHERE id = ?";
-    $stmt = mysqli_prepare($connx, $sql);
-    mysqli_stmt_bind_param($stmt, 'di', $new_price, $product_id);
-    
+
+    if ($discount == 0) {
+        // 0 % : retour au prix d'origine
+        $sql = "UPDATE menu_items SET price = COALESCE(original_price, price), original_price = NULL WHERE id = ?";
+        $stmt = mysqli_prepare($connx, $sql);
+        mysqli_stmt_bind_param($stmt, 'i', $product_id);
+    } else {
+        // La remise s'applique toujours au prix d'origine : deux promotions successives ne se cumulent pas
+        $sql = "UPDATE menu_items
+                SET original_price = COALESCE(original_price, price),
+                    price = ROUND(original_price * (1 - ? / 100), 2)
+                WHERE id = ?";
+        $stmt = mysqli_prepare($connx, $sql);
+        mysqli_stmt_bind_param($stmt, 'di', $discount, $product_id);
+    }
+
     $result = mysqli_stmt_execute($stmt);
     
     mysqli_stmt_close($stmt);
@@ -852,7 +1018,7 @@ function approve_testimonial($testimonial_id) {
  */
 function register_user($username, $email, $password) {
     $connx = connexionDB();
-    
+
     // Vérifiez si l'utilisateur ou l'email existe déjà
     $sql = "SELECT * FROM users WHERE username = ? OR email = ?";
     $stmt = mysqli_prepare($connx, $sql);
@@ -893,12 +1059,12 @@ function register_user($username, $email, $password) {
  * @param float $total_amount Montant total de la commande
  * @return int|false Retourne l'ID de la nouvelle commande en cas de succès, sinon false
  */
-function create_order($user_id, $total_amount) {
+function create_order($user_id, $total_amount, $status = 'pending', $paypal_order_id = null) {
     $connx = connexionDB();
-    
-    $sql = "INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, 'completed')";
+
+    $sql = "INSERT INTO orders (user_id, total_amount, status, paypal_order_id) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($connx, $sql);
-    mysqli_stmt_bind_param($stmt, 'id', $user_id, $total_amount);
+    mysqli_stmt_bind_param($stmt, 'idss', $user_id, $total_amount, $status, $paypal_order_id);
     
     if (mysqli_stmt_execute($stmt)) {
         $new_order_id = mysqli_insert_id($connx);
@@ -1065,6 +1231,53 @@ function can_view_order($user_id, $order_id) {
         mysqli_close($connx);
         return false;
     }
+}
+
+/**
+ * Récupère la commande en attente liée à une commande PayPal, pour un utilisateur donné
+ *
+ * @param string $paypal_order_id ID de la commande côté PayPal
+ * @param int $user_id ID de l'utilisateur
+ * @return array|null Retourne la commande ou null si introuvable
+ */
+function get_pending_order_by_paypal_id($paypal_order_id, $user_id) {
+    $connx = connexionDB();
+
+    $sql = "SELECT * FROM orders WHERE paypal_order_id = ? AND user_id = ? AND status = 'pending'";
+    $stmt = mysqli_prepare($connx, $sql);
+    mysqli_stmt_bind_param($stmt, 'si', $paypal_order_id, $user_id);
+    mysqli_stmt_execute($stmt);
+    $order = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($connx);
+
+    return $order ?: null;
+}
+
+/**
+ * Fonction pour enregistrer une réservation
+ *
+ * @param int $user_id ID de l'utilisateur
+ * @param string $date Date (AAAA-MM-JJ)
+ * @param string $time Heure (HH:MM)
+ * @param int $people Nombre de personnes
+ * @param string $special_requests Demandes spéciales
+ * @return bool Retourne true en cas de succès, sinon false
+ */
+function add_reservation($user_id, $date, $time, $people, $special_requests) {
+    $connx = connexionDB();
+
+    $sql = "INSERT INTO reservations (user_id, date, time, people, special_requests) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($connx, $sql);
+    mysqli_stmt_bind_param($stmt, 'issis', $user_id, $date, $time, $people, $special_requests);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($connx);
+
+    return $result;
 }
 
 ?>

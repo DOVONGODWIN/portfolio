@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navbar = document.querySelector('.navbar');
     const header = document.querySelector('header');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
 
     // Fonctions
     function toggleMenu() {
@@ -14,73 +15,81 @@ document.addEventListener('DOMContentLoaded', function() {
         header?.classList.toggle('sticky', window.scrollY > 0);
     }
 
-     // Event Listeners
-     menuToggle?.addEventListener('click', toggleMenu);
-     window.addEventListener('scroll', toggleStickyHeader);
-     
     function smoothScroll(e) {
-        e.preventDefault();
         const href = this.getAttribute('href');
-        if (href !== '#') {
-            const targetElement = document.querySelector(href);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            }
+        if (href === '#') {
+            return;
+        }
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+            e.preventDefault();
+            targetElement.scrollIntoView({ behavior: 'smooth' });
         }
     }
 
-    async function addToCart(itemId) {
+    // Requête POST vers un endpoint PHP, avec le jeton CSRF de la page
+    async function postForm(url, params) {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-Token': csrfToken
+            },
+            body: new URLSearchParams(params)
+        });
+        return response.json();
+    }
+
+    async function addToCart(productId) {
         try {
-            const response = await fetch('add_to_cart.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `item_id=${itemId}`
-            });
-            const data = await response.json();
-            if (data.success) {
-                alert('Produit ajouté au panier');
-                updateCartCount();
-            } else {
-                throw new Error('Erreur lors de l\'ajout au panier');
+            const data = await postForm('add_to_cart.php', { product_id: productId });
+            if (!data.success) {
+                throw new Error(data.message || 'Erreur lors de l\'ajout au panier');
             }
+            alert('Produit ajouté au panier');
+            updateCartCount();
         } catch (error) {
             console.error('Erreur:', error);
             alert(error.message);
         }
     }
 
-    async function updateCartItemQuantity(itemId, quantity) {
+    async function updateCartItemQuantity(productId, quantity) {
         try {
-            const response = await fetch('update_cart_quantity.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `item_id=${itemId}&quantity=${quantity}`
-            });
-            const data = await response.json();
-            if (data.success) {
-                updateCartTotal();
-            } else {
-                throw new Error('Erreur lors de la mise à jour de la quantité');
+            const data = await postForm('update_cart_quantity.php', { product_id: productId, quantity: quantity });
+            if (!data.success) {
+                throw new Error(data.message || 'Erreur lors de la mise à jour de la quantité');
             }
+            location.reload();
         } catch (error) {
             console.error('Erreur:', error);
             alert(error.message);
         }
     }
 
-    async function removeCartItem(itemId) {
+    async function removeCartItem(productId) {
         try {
-            const response = await fetch('remove_cart_item.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `item_id=${itemId}`
-            });
-            const data = await response.json();
-            if (data.success) {
-                location.reload();
-            } else {
-                throw new Error('Erreur lors de la suppression de l\'article');
+            const data = await postForm('remove_from_cart.php', { product_id: productId });
+            if (!data.success) {
+                throw new Error(data.message || 'Erreur lors de la suppression de l\'article');
             }
+            location.reload();
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert(error.message);
+        }
+    }
+
+    async function deleteProduct(button) {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+            return;
+        }
+        try {
+            const data = await postForm('delete_product.php', { id: button.dataset.id });
+            if (!data.success) {
+                throw new Error(data.message || 'Erreur lors de la suppression du produit');
+            }
+            button.closest('.box')?.remove();
         } catch (error) {
             console.error('Erreur:', error);
             alert(error.message);
@@ -88,40 +97,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function updateCartCount() {
+        const cartCountElement = document.getElementById('cart-count');
+        if (!cartCountElement) {
+            return;
+        }
         try {
             const response = await fetch('get_cart_count.php');
             const data = await response.json();
-            const cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = data.count;
-            }
+            cartCountElement.textContent = data.count;
         } catch (error) {
             console.error('Erreur lors de la mise à jour du compteur du panier:', error);
-        }
-    }
-
-    async function updateCartTotal() {
-        try {
-            const response = await fetch('get_cart_total.php');
-            const data = await response.json();
-            const cartTotalElement = document.getElementById('cart-total');
-            if (cartTotalElement) {
-                cartTotalElement.textContent = data.total;
-            }
-        } catch (error) {
-            console.error('Erreur lors de la mise à jour du total du panier:', error);
         }
     }
 
     // Event Listeners
     menuToggle?.addEventListener('click', toggleMenu);
     window.addEventListener('scroll', toggleStickyHeader);
-    
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', smoothScroll);
     });
 
-    document.querySelectorAll('.acheter').forEach(button => {
+    document.querySelectorAll('.acheter, .add-to-cart').forEach(button => {
         button.addEventListener('click', () => addToCart(button.dataset.id));
     });
 
@@ -133,26 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', () => removeCartItem(button.dataset.id));
     });
 
-    // Validation du formulaire de réservation
-    const reservationForm = document.querySelector('#reservation form');
-    if (reservationForm) {
-        reservationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Ajoutez ici la logique de validation du formulaire
-        });
-    }
-
-    // Gestion du bouton de paiement PayPal
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const paypalContainer = document.getElementById('paypal-button-container');
-
-    if (checkoutBtn && paypalContainer) {
-        checkoutBtn.addEventListener('click', function() {
-            checkoutBtn.style.display = 'none';
-            paypalContainer.style.display = 'block';
-        });
-    }
-
-    // Initialisation
-    updateCartCount();
+    document.querySelectorAll('.delete-product').forEach(button => {
+        button.addEventListener('click', () => deleteProduct(button));
+    });
 });

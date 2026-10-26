@@ -1,3 +1,4 @@
+<?php if (!defined('APP_ROUTER')) { header('Location: index.php?page=reservation'); exit; } ?>
 <style>
     body{
         padding-top: 20vh;
@@ -59,7 +60,7 @@
 }
 
 .inputboite input[type="submit"]:hover {
-    background-color:rgb(255, 162, 2);
+    background-color: #d87710;
 }
 
 /* Textearea */
@@ -70,18 +71,20 @@
 </style>
 <section id="reservation" class="reservation">
     <h2>Réservation</h2>
+    <?php flash_messages(); ?>
     <form action="reservation_process.php" method="post">
+        <?php echo csrf_field(); ?>
         <div class="inputboite">
-            <input type="date" name="date" required>
+            <input type="date" name="date" min="<?php echo date('Y-m-d'); ?>" required>
         </div>
         <div class="inputboite">
             <input type="time" name="time" required>
         </div>
         <div class="inputboite">
-            <input type="number" name="people" placeholder="Nombre de personnes" min="1" required>
+            <input type="number" name="people" placeholder="Nombre de personnes" min="1" max="20" required>
         </div>
         <div class="inputboite">
-            <textarea name="special_requests" placeholder="Demandes spéciales"></textarea>
+            <textarea name="special_requests" placeholder="Demandes spéciales" maxlength="1000"></textarea>
         </div>
         <div class="inputboite">
             <input type="submit" value="Réserver">

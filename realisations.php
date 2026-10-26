@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Réalisations - Godwin Dovon";
 $pageDescription = "Projets web, applications PHP, React, sites WordPress et maquettes Figma réalisés par Godwin Dovon.";
-include "header.php";
+include __DIR__ . '/includes/header.php';
 ?>
   <!-- Hero Section Projets -->
   <section class="projects-hero">
@@ -76,7 +76,7 @@ include "header.php";
 <!-- Projet PERJAM -->
         <div class="project-card" data-tech="csharp" data-aos="fade-up" data-aos-delay="600">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/pepperjam.png" alt="Capture du jeu PepperJam">
+            <img loading="lazy" src="assets/images/projets/pepperjam.png" alt="Capture du jeu PepperJam">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://pepperjam.itch.io/pepperjam" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -111,7 +111,7 @@ include "header.php";
       <!-- Projet Playa-Rent -->
         <div class="project-card" data-tech="csharp" data-aos="fade-up" data-aos-delay="600">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/playa-rent.png" alt="Application de location Playa-Rent">
+            <img loading="lazy" src="assets/images/projets/playa-rent.png" alt="Application de location Playa-Rent">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://jdevservices.francecentral.cloudapp.azure.com/QRCodeCustomerJourneyWebApp/home/C7723032-F1E8-48B0-81DE-E81704CEE68E" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -148,7 +148,7 @@ include "header.php";
 <!-- Projet WordPress BDS -->
         <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="600">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/win-sport-school.png" alt="Site BDS Win Sport School">
+            <img loading="lazy" src="assets/images/projets/win-sport-school.png" alt="Site BDS Win Sport School">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://www.messanhgodwin-dovon.mds-angers.yt/www.win-sport--school.com/index.php/accueil/" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -186,7 +186,7 @@ include "header.php";
         <!-- Projet WordPress BDS -->
         <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="600">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/win-sport-school.png" alt="Site BDS Win Sport School - résultats sportifs">
+            <img loading="lazy" src="assets/images/projets/win-sport-school.png" alt="Site BDS Win Sport School - résultats sportifs">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://www.godwin-messanhdovon.espl-angers.yt/index.php/accueil/" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -225,10 +225,10 @@ include "header.php";
         <!-- Projet PHP/SQL -->
         <div class="project-card" data-tech="php" data-aos="fade-up" data-aos-delay="200">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/restaurant-login.png" alt="Application de gestion de restaurant">
+            <img loading="lazy" src="assets/images/projets/restaurant.png" alt="Application de gestion de restaurant">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="D1/index.php" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                <a href="projets/restaurant/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -270,10 +270,10 @@ include "header.php";
         <!-- Projet Frontend -->
         <div class="project-card" data-tech="frontend" data-aos="fade-up" data-aos-delay="300">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/todo-list.png" alt="Application Todo List en JavaScript">
+            <img loading="lazy" src="assets/images/projets/todo-javascript.png" alt="Application Todo List en JavaScript">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="projet-fil-rouge/index.html" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                <a href="projets/todo-javascript/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -311,10 +311,10 @@ include "header.php";
         <!-- Projet Frontend react -->
         <div class="project-card" data-tech="react" data-aos="fade-up" data-aos-delay="300">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/react-landing.png" alt="Todo List en React">
+            <img loading="lazy" src="assets/images/projets/todo-react.png" alt="Todo List en React">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="React FIRST/demo/index.html" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                <a href="projets/todo-react/demo/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -348,10 +348,10 @@ include "header.php";
         <!-- Projet Frontend/PHP -->
         <div class="project-card" data-tech="frontend" data-aos="fade-up" data-aos-delay="400">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/site-vitrine.jpg" alt="Site Vitrine Moderne">
+            <img loading="lazy" src="assets/images/projets/site-vitrine.jpg" alt="Site Vitrine Moderne">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="PARTIEL/ACCUEIL.php" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                <a href="projets/site-vitrine/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -391,7 +391,7 @@ include "header.php";
         <!-- Projet WordPress -->
         <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="500">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/blog-wordpress.jpg" alt="Site Blog WordPress">
+            <img loading="lazy" src="assets/images/projets/blog-wordpress.jpg" alt="Site Blog WordPress">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://www.messanhgodwin-dovon.mds-angers.yt/www.nikkicoachingtherapie.com/index.php/accueil/" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -431,7 +431,7 @@ include "header.php";
         <!-- Projet WordPress Triple Gem -->
         <div class="project-card" data-tech="wordpress" data-aos="fade-up" data-aos-delay="700">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/triple-gem.jpg" alt="Site Triple Gem">
+            <img loading="lazy" src="assets/images/projets/triple-gem.jpg" alt="Site Triple Gem">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://www.messanhgodwin-dovon.mds-angers.yt/wwwtriplegem.com/" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -471,7 +471,7 @@ include "header.php";
          <!-- Projet Figma2 -->
         <div class="project-card" data-tech="figma" data-aos="fade-up" data-aos-delay="700">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/maquette-figma-nexaa.png" alt="Maquette e-commerce Nexaa sur Figma">
+            <img loading="lazy" src="assets/images/projets/maquette-figma-nexaa.png" alt="Maquette e-commerce Nexaa sur Figma">
             <div class="project-overlay">
               <div class="project-links">
                 <a href="https://www.figma.com/proto/0tapNLbFrgAV6nEOj8woJv/Untitled?page-id=0%3A1&node-id=139-3444&viewport=1425%2C-1747%2C0.5&t=15wY5Jr3jSBmUSnd-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=104%3A820" class="project-link demo" target="_blank" rel="noopener noreferrer">
@@ -509,7 +509,7 @@ include "header.php";
  <!-- Projet PhotoShop -->
         <div class="project-card" data-tech="design" data-aos="fade-up" data-aos-delay="700">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/magazine-bazzar-vog.png" alt="Couverture de magazine Bazzar Vog">
+            <img loading="lazy" src="assets/images/projets/magazine-bazzar-vog.png" alt="Couverture de magazine Bazzar Vog">
             <div class="project-tech-badge">Photoshop</div>
           </div>
           <div class="project-content">
@@ -534,10 +534,10 @@ include "header.php";
         <!-- Projet PHP Calculateur IMC -->
         <div class="project-card" data-tech="php" data-aos="fade-up" data-aos-delay="800">
           <div class="project-image">
-            <img loading="lazy" src="images/projets/calculateur-imc.png" alt="Calculateur IMC">
+            <img loading="lazy" src="assets/images/projets/calculateur-imc.png" alt="Calculateur IMC">
             <div class="project-overlay">
               <div class="project-links">
-                <a href="DEVOIR/phpd.php" class="project-link demo" target="_blank" rel="noopener noreferrer">
+                <a href="projets/calculateur-imc/" class="project-link demo" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15,3 21,3 21,9"/>
@@ -581,8 +581,8 @@ include "header.php";
         <h2>Intéressé par l'un de ces projets ?</h2>
         <p>Discutons de vos besoins et de la façon dont je peux vous aider à réaliser votre vision</p>
         <div class="projects-cta-buttons">
-          <a href="contact-modern.php" class="btn-modern btn-primary">Me contacter</a>
-          <a href="portfolio.php" class="btn-modern btn-secondary">Retour à l'accueil</a>
+          <a href="contact.php" class="btn-modern btn-primary">Me contacter</a>
+          <a href="./" class="btn-modern btn-secondary">Retour à l'accueil</a>
         </div>
       </div>
     </div>
@@ -1156,4 +1156,4 @@ include "header.php";
     });
   </script>
 
-  <?php include 'footer.php'; ?>
+  <?php include __DIR__ . '/includes/footer.php'; ?>

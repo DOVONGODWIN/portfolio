@@ -1,0 +1,39 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+
+# Anciennes adresses -> nouvelle arborescence (redirections permanentes, valables quel que soit le dossier d'installation)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_URI} ^(.*/)portfolio\.php$
+    RewriteRule ^portfolio\.php$ %1 [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)projet\.php$
+    RewriteRule ^projet\.php$ %1realisations.php [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)contact-modern\.php$
+    RewriteRule ^contact-modern\.php$ %1contact.php [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)Godwin_Dovon_CV_2026\.pdf$
+    RewriteRule ^Godwin_Dovon_CV_2026\.pdf$ %1assets/documents/cv-godwin-dovon-2026.pdf [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)D1(/.*)?$
+    RewriteRule ^D1(/.*)?$ %1projets/restaurant/ [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)PARTIEL(/.*)?$
+    RewriteRule ^PARTIEL(/.*)?$ %1projets/site-vitrine/ [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)DEVOIR(/.*)?$
+    RewriteRule ^DEVOIR(/.*)?$ %1projets/calculateur-imc/ [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)projet-fil-rouge(/.*)?$
+    RewriteRule ^projet-fil-rouge(/.*)?$ %1projets/todo-javascript/ [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^(.*/)React(%20|\ )FIRST(/.*)?$
+    RewriteRule ^React\ FIRST(/.*)?$ %1projets/todo-react/demo/ [R=301,L]
+</IfModule>
+
+# Fichiers qui ne doivent jamais être servis
+<FilesMatch "^(config(\.example)?\.php|composer\.(json|lock)|README\.md|\.gitignore)$">
+    Require all denied
+</FilesMatch>

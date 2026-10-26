@@ -13,9 +13,9 @@ $pageDescription = $pageDescription ?? 'Portfolio de Godwin Dovon, développeur 
   <meta property="og:type" content="website">
   <meta property="og:title" content="<?php echo htmlspecialchars($pageTitle); ?>">
   <meta property="og:description" content="<?php echo htmlspecialchars($pageDescription); ?>">
-  <meta property="og:image" content="images/logo.png">
-  <link rel="icon" type="image/png" href="images/logo.png">
-  <link rel="stylesheet" href="gg.css">
+  <meta property="og:image" content="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="assets/css/style.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <style>
@@ -84,15 +84,15 @@ $pageDescription = $pageDescription ?? 'Portfolio de Godwin Dovon, développeur 
   <header class="header">
     <div class="container">
       <div class="logo">
-        <a href="portfolio.php"><img src="images/logo.png" alt="Logo Godwin Dovon"></a>
+        <a href="./"><img src="assets/images/logo.png" alt="Logo Godwin Dovon"></a>
         <span>godwindovon@gmail.com</span>
       </div>
       <nav class="nav">
-        <a href="portfolio.php">Accueil</a>
-        <a href="projet.php">Réalisations</a>
+        <a href="./">Accueil</a>
+        <a href="realisations.php">Réalisations</a>
       </nav>
       <div class="cta">
-        <a href="contact-modern.php" class="btn">Contact</a>
+        <a href="contact.php" class="btn">Contact</a>
       </div>
     </div>
   </header>

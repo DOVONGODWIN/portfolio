@@ -6,6 +6,9 @@ config.php
 sendmail.ini
 php_email_config.ini
 
+# --- Fichiers personnels non publiés ---
+_prive/
+
 # --- Données privées et runtime (messages de contact, logs) ---
 data/*
 !data/.htaccess

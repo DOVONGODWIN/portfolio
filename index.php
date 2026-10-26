@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "Godwin Dovon - Développeur Full-Stack";
-include "header.php";
+include __DIR__ . '/includes/header.php';
 ?>
   <!-- Hero Section avec Parallax -->
   <section class="hero-modern">
@@ -20,11 +20,11 @@ include "header.php";
         <h2 class="hero-subtitle">Développeur Full-Stack Créatif</h2>
         <p class="hero-description">Étudiant en licence, actuellement en stage de développement</p>
         <div class="hero-buttons">
-          <a href="projet.php" class="btn-modern btn-primary" data-aos="fade-up" data-aos-delay="200">
+          <a href="realisations.php" class="btn-modern btn-primary" data-aos="fade-up" data-aos-delay="200">
             <span>Voir mes projets</span>
             <div class="btn-glow"></div>
           </a>
-          <a href="contact-modern.php" class="btn-modern btn-secondary" data-aos="fade-up" data-aos-delay="400">
+          <a href="contact.php" class="btn-modern btn-secondary" data-aos="fade-up" data-aos-delay="400">
             <span>Me contacter</span>
             <div class="btn-glow"></div>
           </a>
@@ -68,7 +68,7 @@ include "header.php";
                 <div class="timeline-date">Mars 2025 - Présent</div>
                 <h4>Stage de développeur chez Ohana entreprise</h4>
                 <p>Participation à un projet de marketplace, suivi de la conception de sites internet pour des clients.</p>
-                <a href="projet.php" class="timeline-link">Voir les réalisations →</a>
+                <a href="realisations.php" class="timeline-link">Voir les réalisations →</a>
               </div>
             </div>
             
@@ -78,7 +78,7 @@ include "header.php";
                 <div class="timeline-date">2024 - 2025</div>
                 <h4>Développeur Web Freelance</h4>
                 <p>Conception de projets freelance (marketplace, Site Web)</p>
-                <a href="projet.php" class="timeline-link">Voir les réalisations →</a>
+                <a href="realisations.php" class="timeline-link">Voir les réalisations →</a>
               </div>
             </div>
             
@@ -153,7 +153,7 @@ include "header.php";
       <div class="skills-grid-modern">
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="200">
           <div class="skill-icon">
-            <img src="images/skills/html-css-js.png" alt="HTML/CSS/JS">
+            <img src="assets/images/competences/html-css-js.png" alt="HTML/CSS/JS">
           </div>
           <h3>HTML, CSS & JS</h3>
           <div class="skill-bar">
@@ -164,7 +164,7 @@ include "header.php";
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="300">
           <div class="skill-icon">
-            <img src="images/skills/php-sql.png" alt="PHP/SQL">
+            <img src="assets/images/competences/php-sql.png" alt="PHP/SQL">
           </div>
           <h3>PHP & SQL</h3>
           <div class="skill-bar">
@@ -175,7 +175,7 @@ include "header.php";
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="400">
           <div class="skill-icon">
-            <img src="images/skills/nodejs.png" alt="Node.js">
+            <img src="assets/images/competences/nodejs.png" alt="Node.js">
           </div>
           <h3>Node.js</h3>
           <div class="skill-bar">
@@ -186,7 +186,7 @@ include "header.php";
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="500">
           <div class="skill-icon">
-            <img src="images/skills/react.png" alt="React">
+            <img src="assets/images/competences/react.png" alt="React">
           </div>
           <h3>React</h3>
           <div class="skill-bar">
@@ -197,7 +197,7 @@ include "header.php";
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="600">
           <div class="skill-icon">
-            <img src="images/skills/git.png" alt="Git">
+            <img src="assets/images/competences/git.png" alt="Git">
           </div>
           <h3>Git et GitHub</h3>
           <div class="skill-bar">
@@ -208,7 +208,7 @@ include "header.php";
         
         <div class="skill-card-modern" data-aos="zoom-in" data-aos-delay="700">
           <div class="skill-icon">
-            <img src="images/skills/python.png" alt="Python">
+            <img src="assets/images/competences/python.png" alt="Python">
           </div>
           <h3>Python</h3>
           <div class="skill-bar">
@@ -227,8 +227,8 @@ include "header.php";
         <h2>Prêt à collaborer sur votre prochain projet ?</h2>
         <p>Découvrez mes réalisations et discutons de vos besoins</p>
         <div class="cta-buttons">
-          <a href="projet.php" class="btn-modern btn-primary">Voir mes projets</a>
-          <a href="contact-modern.php" class="btn-modern btn-secondary">Me contacter</a>
+          <a href="realisations.php" class="btn-modern btn-primary">Voir mes projets</a>
+          <a href="contact.php" class="btn-modern btn-secondary">Me contacter</a>
         </div>
       </div>
     </div>
@@ -826,4 +826,4 @@ include "header.php";
     });
   </script>
 
-  <?php include 'footer.php'; ?>
+  <?php include __DIR__ . '/includes/footer.php'; ?>

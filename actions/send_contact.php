@@ -12,9 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Méthode non autorisée', 405);
 }
 
-$config_file = __DIR__ . '/config.php';
-$config = file_exists($config_file) ? require $config_file : require __DIR__ . '/config.example.php';
-$data_dir = __DIR__ . '/data';
+$root = dirname(__DIR__);
+$config_file = $root . '/config.php';
+$config = file_exists($config_file) ? require $config_file : require $root . '/config.example.php';
+$data_dir = $root . '/data';
 
 // Honeypot : champ invisible que seuls les robots remplissent
 if (!empty($_POST['website'])) {
@@ -53,8 +54,8 @@ $body .= "Message :\n$message\n";
 
 // Envoi SMTP si un mot de passe est configuré
 $smtp = $config['smtp'];
-if (!empty($smtp['password']) && file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require __DIR__ . '/vendor/autoload.php';
+if (!empty($smtp['password']) && file_exists($root . '/vendor/autoload.php')) {
+    require $root . '/vendor/autoload.php';
 
     try {
         $mail = new PHPMailer\PHPMailer\PHPMailer(true);

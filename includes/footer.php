@@ -2,14 +2,14 @@
     <div class="footer-content">
       <!-- Logo -->
       <div class="footer-logo">
-        <img src="images/logo.png" alt="Logo" />
+        <img src="assets/images/logo.png" alt="Logo" />
       </div>
   
       <!-- Navigation -->
       <ul class="footer-nav">
-        <li><a href="portfolio.php">Accueil</a></li>
-        <li><a href="projet.php">Réalisations</a></li>
-        <li><a href="contact-modern.php">Contact</a></li>
+        <li><a href="./">Accueil</a></li>
+        <li><a href="realisations.php">Réalisations</a></li>
+        <li><a href="contact.php">Contact</a></li>
       </ul>
   
       <!-- Copyright -->

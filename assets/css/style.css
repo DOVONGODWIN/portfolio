@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+     height: 100vh;
+}
+
+header {
+    background-color: #2b3035;
+    color: white;
+    padding: 20px;
+}
+
+main {
+    padding: 20px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+.alertalert-danger{
+color: rgb(255, 255, 255);
+background-color: rgb(247, 129, 129);
+height: 20vh;
+border-radius: 15px;
+}
+.obésitésévère{
+    background-color: rgb(247, 5, 81);
+    color: rgb(255, 255, 255);
+    height: 20vh;
+border-radius: 15px;
+}
+.obésitémodérée{
+    background-color: rgb(255, 123, 0);
+    color: rgb(255, 255, 255);
+    height: 20vh;
+border-radius: 15px;
+}
+.surpoids{
+    background-color: rgb(255, 200, 0);
+    color: rgb(0, 0, 0);
+    height: 20vh;
+border-radius: 15px;
+}
+.corpulencenormale{
+    background-color: greenyellow;
+    color: rgb(0, 0, 0);
+    height: 20vh;
+border-radius: 15px;
+
+}
+.maigreur{
+    background-color: aqua;
+    color: rgb(0, 0, 0);
+    height: 20vh;
+border-radius: 15px;
+}
+.obésitémorbid{
+    background-color: violet;
+    color: rgb(0, 0, 0);
+    height: 20vh;
+border-radius: 15px;
+}
+.famine{
+    background-color: rgb(183, 0, 255);
+    color: rgb(255, 255, 255);
+    height: 20vh;
+border-radius: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+    

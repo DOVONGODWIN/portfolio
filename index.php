@@ -16,33 +16,33 @@ require_once 'includes/cart_functions.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo csrf_token(); ?>">
     <title>Resto.</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include 'includes/header.php'; ?>
 
     <main>
     <?php
     // Définition des pages autorisées avec leurs fichiers correspondants
     $allowed_pages = [
-        'accueil' => 'accueil.php',
-        'a-propos' => 'a-propos.php',
-        'menu' => 'menu.php',
-        'temoignages' => 'temoignages.php',
-        'contact' => 'contact.php',
-        'login' => 'login.php',
-        'register' => 'register.php',
-        'panier' => 'panier.php',
-        'reservation' => 'reservation.php',
-        'ajouter_produit' => 'ajouter_produit.php',
-        'detail_produit' => 'detail_produit.php',
-        'profile' => 'profile.php',
-        'modifier_produit' => 'modifier_produit.php',
-        'mes_commandes' => 'mes_commandes.php',
-        'detail_commande' => 'detail_commande.php',
-        'confirmation' => 'confirmation.php',
-        'admin_dashboard' => 'admin_dashboard.php'
+        'accueil' => 'pages/accueil.php',
+        'a-propos' => 'pages/a-propos.php',
+        'menu' => 'pages/menu.php',
+        'temoignages' => 'pages/temoignages.php',
+        'contact' => 'pages/contact.php',
+        'login' => 'pages/login.php',
+        'register' => 'pages/register.php',
+        'panier' => 'pages/panier.php',
+        'reservation' => 'pages/reservation.php',
+        'ajouter_produit' => 'pages/ajouter_produit.php',
+        'detail_produit' => 'pages/detail_produit.php',
+        'profile' => 'pages/profile.php',
+        'modifier_produit' => 'pages/modifier_produit.php',
+        'mes_commandes' => 'pages/mes_commandes.php',
+        'detail_commande' => 'pages/detail_commande.php',
+        'confirmation' => 'pages/confirmation.php',
+        'admin_dashboard' => 'pages/admin_dashboard.php'
     ];
 
     // Pages réservées aux utilisateurs connectés / aux administrateurs
@@ -73,14 +73,14 @@ require_once 'includes/cart_functions.php';
     if (file_exists($allowed_pages[$page])) {
         include $allowed_pages[$page];
     } else {
-        include '404.php';
+        include 'pages/404.php';
     }
     ?>
     </main>
 
-    <?php include 'footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 
-    <script src="js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
 <?php ob_end_flush(); ?>

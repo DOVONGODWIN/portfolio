@@ -3,9 +3,8 @@ includes/config.php
 .env
 .env.*
 
-# --- Fichiers envoyés par les utilisateurs ---
-upload/*
-!upload/.htaccess
+# --- Photos de profil envoyées par les utilisateurs (les images des plats sont versionnées) ---
+uploads/profils/*
 
 # --- Système / éditeur ---
 *.log

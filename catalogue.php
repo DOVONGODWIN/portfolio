@@ -1,8 +1,11 @@
-<?php include 'header.php'; ?>
-    <div class="conainer">
+<?php
+$pageTitle = 'Nos offres';
+include __DIR__ . '/includes/header.php';
+?>
+<div class="conainer" id="voitures">
         
         <div class="imge-block">
-            <img src="77100cc91bf9f9d114abda7f94d56b6d.jpg" alt="Description de l'image">
+            <img src="assets/images/offres/voiture-bmw.jpg" alt="">
             
         </div>
         <div class="tex-block">
@@ -23,7 +26,7 @@
     <br>
     <br>
     <br>
-    <div class="conainer">
+    <div class="conainer" id="bateaux">
         <div class="tex-block">
             <h1>LOCATION DE BATEAU </h1>
             <p>Prenez le large avec nos bateaux de prestige
@@ -37,7 +40,7 @@
         </div>
         
         <div class="imge-block">
-            <img src="a19f14fcda031c442cb6223700c757d5.jpg" alt="Description de l'image">
+            <img src="assets/images/offres/bateau-riva.jpg" alt="">
             
         </div>
         
@@ -48,10 +51,10 @@
     <br>
     <br>
     <br>
-    <div class="conainer">
+    <div class="conainer" id="immobilier">
         
         <div class="imge-block">
-            <img src="c0856ba58239d90010bd01977fbb26a3.jpg" alt="Description de l'image">
+            <img src="assets/images/offres/villa-moderne.jpg" alt="">
             
         </div>
         <div class="tex-block">
@@ -72,7 +75,7 @@
     <br>
     <br>
     <br>
-    <div class="conainer">
+    <div class="conainer" id="activites">
         
         
         <div class="tex-block">
@@ -87,10 +90,9 @@
                 Transformez vos vacances en véritables aventures.</p>
         </div>
         <div class="imge-block">
-            <img src="7ff145d7b869bcc2857a4ee1f3a83cfa.jpg" alt="Description de l'image">
+            <img src="assets/images/offres/jetski.jpg" alt="">
             
         </div>
     </div>
-    <?php include 'footer.php'; ?>
-</body>
-</html>
+
+<?php include __DIR__ . '/includes/footer.php'; ?>

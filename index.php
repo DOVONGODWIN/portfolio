@@ -1,21 +1,23 @@
-<?php include 'header.php'; ?>
-<body>
-    <div class="container">
+<?php
+$pageTitle = 'Accueil';
+include __DIR__ . '/includes/header.php';
+?>
+<div class="container">
         
         <div class="media">
-            <a href="tout.php"><img src="fc67eb883a2ac81a2d093b611b4e5124.jpg" alt="Image 1" class="image">
-            <div class="videot"><video src="Bateau.mp4" class="video" muted loop autoplay></video></div></a>
+            <a href="catalogue.php"><img src="assets/images/offres/voiture-nissan-gtr.jpg" alt="Location de véhicules de luxe" class="image">
+            <div class="videot"><video src="assets/videos/bateau.mp4" class="video" muted loop autoplay></video></div></a>
             <div class="vc"><p>LOCATION</p></div>
         </div>
      <div class="fe">
         <div class="media1">
-           <a href="tout.php"> <img src="c0856ba58239d90010bd01977fbb26a3.jpg" alt="Image 2" class="image">
-           <div class="videt"> <video src="Immobilier.mp4" class="video" muted loop autoplay></video></div> 
+           <a href="catalogue.php"> <img src="assets/images/offres/villa-moderne.jpg" alt="Immobilier de prestige" class="image">
+           <div class="videt"> <video src="assets/videos/immobilier.mp4" class="video" muted loop autoplay></video></div> 
            <div class="vcc"><p> IMMOBILIER</p></div></a>
         </div>
         <div class="media1">
-            <a href="tout.php"><img src="7ff145d7b869bcc2857a4ee1f3a83cfa.jpg" alt="Image 3" class="image">
-            <div class="videt"><video src="JetSki.mp4" class="video" muted loop autoplay></video></div>
+            <a href="catalogue.php"><img src="assets/images/offres/jetski.jpg" alt="Activités nautiques" class="image">
+            <div class="videt"><video src="assets/videos/jetski.mp4" class="video" muted loop autoplay></video></div>
             <div class="vcc"><p>ACTIVITES</p></div></a>
         </div>
      </div>
@@ -25,20 +27,20 @@
     <div class="rp">
        <input class="pi" type="text" id="query"name="query" placeholder="   Un hôtel,un circuit,une destination..." >
        <button class="ui">
-        <a class="re" href="tout.php">Toutes nos offres</a>
+        <a class="re" href="catalogue.php">Toutes nos offres</a>
        </button>
        
     </div>
     <div class="containe">
         <div class="bloc">
-            <img src="fc02ae33fe8b3b0545906e67d0d14932 copy.jpg" alt="Logo 1">
+            <img src="assets/images/icones/exception.jpg" alt="">
             <h2>EXCEPTION</h2>
             <br>
             <p>La confidentialité est notre priorité, Le Cercle garantit une prise en charge discrète et sécurisée, avec une équipe
                 dédiée, formée pour anticiper vos besoins tout en respectant votre vie privée.</p>
         </div>
         <div class="bloc">
-            <img src="1ea155db4ffb6fe0fcd4607619d96c5d.jpg" alt="Logo 2">
+            <img src="assets/images/icones/boussole.jpg" alt="">
             <h2>EXPERTISE</h2>
             <br>
             <p>Notre équipe d'experts hautement qualifiés est à votre écoute 24h/24 pour orchestrer chaque détail de vos projets.
@@ -46,24 +48,23 @@
                 réalise vos demandes les plus complexes, où que vous soyez.</p>
         </div>
         <div class="bloc">
-            <img src="fc02ae33fe8b3b0545906e67d0d14932 copy.jpg" alt="Logo 3">
+            <img src="assets/images/icones/exception.jpg" alt="">
             <h2>PRIVILEGE</h2>
             <br>
             <p>En tant que membre de "Le Cercle", vous bénéficiez d'un accès prioritaire aux services les plus exclusifs. Profitez des meilleures adresses, d'événements privés et de collaborations de prestige réservées à une clientèle d'élite.</p>
         </div>
         <div class="bloc">
-            <img src="téléchargement (20).png" alt="Logo 4">
+            <img src="assets/images/icones/cadenas.png" alt="">
             <h2>DISCRETION</h2>
             <br>
             <p>La confidentialité est notre priorité. Le
                 Cercle garantit une prise en charge discrète et sécurisée, avec une équipe
                 dédiée, formée pour anticiper vos besoins tout en respectant votre vie privée.</p>
         </div>
-        <div class="fd"><img src="thx.png" alt=""></div>     
+        <div class="fd"><img src="assets/images/confiance-the-circle.png" alt=""></div>     
  <div class="tte">
-    <div class="ml"><img src="Plan de travail 1.png" alt=""></div>
-    <div class="ml" id="ff"><img src="Plan de travail 2.png" alt=""></div>
- </div>   
-<?php include 'footer.php'; ?>    
-</body>
-</html>
+    <div class="ml"><img src="assets/images/temoignages/temoignage-cote-azur.png" alt=""></div>
+    <div class="ml" id="ff"><img src="assets/images/temoignages/temoignage-yacht.png" alt=""></div>
+ </div>
+
+<?php include __DIR__ . '/includes/footer.php'; ?>

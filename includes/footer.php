@@ -1,4 +1,4 @@
-<footer>
+<footer<?php echo isset($footerClass) ? ' class="' . htmlspecialchars($footerClass) . '"' : ''; ?>>
     <div class="footer-container">
         <div class="footer-column">
             <h3>À propos</h3>
@@ -24,15 +24,17 @@
         <div class="footer-column">
             <h3>Liens utiles</h3>
             <ul>
-                <li><a href="ACCUEIL.html">Accueil</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Politique de confidentialité</a></li>
-                <li><a href="#">Contactez-nous</a></li>
-                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="./">Accueil</a></li>
+                <li><a href="services.php">Services</a></li>
+                <li><a href="catalogue.php">Nos offres</a></li>
+                <li><a href="contact.php">Contactez-nous</a></li>
+                <li><a href="newsletter.php">Newsletter</a></li>
             </ul>
         </div>
     </div>
     <div class="footer-bottom">
-        © 2024 The Circle. Tous droits réservés.
+        © <?php echo date('Y'); ?> The Circle. Tous droits réservés.
     </div>
 </footer>
+</body>
+</html>

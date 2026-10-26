@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="qq.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
+<?php
+$pageTitle = 'Contact';
+$extraHead = '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">';
+include __DIR__ . '/includes/header.php';
+?>
+<style>
    
     
 .Mr1 {
@@ -101,25 +90,7 @@ height: 6vh;
 
    
   </style>
-</head>
-<body>
-    <header class="AAA">
-        <div class="logo">
-            <div class="lll">
-                <a href="ACCUEIL.php"><img class="img" src="Logo-Blanc-sans-fond 1.png" alt=""></a>
-            </div>
-           
-        </div>
-        <div class="menu">
-            <ul>
-                <li><a href="NOS SERVICE.php">NOS SERVICES</a></li>
-                <li><a href="CONTAC.php"> CONTACT</a></li>
-                <li><a href="qui somme nous.php">QUI SOMME-NOUS</a></li>
-            </ul>
-        </div>
-    </header>
-<body>
- <div class="Mr1">
+<div class="Mr1">
   <div class="Mr2">
     <div class="info">
       <div class="casep2">
@@ -143,7 +114,7 @@ height: 6vh;
   </div>
   <div class="Mr2">
     <div class="imgdiv">
-      <img src="Device 2.png" alt="" class="img2">
+      <img src="assets/images/mockup-contact-mobile.png" alt="Contactez-nous" class="img2">
     </div>
    
   </div>
@@ -171,10 +142,10 @@ height: 6vh;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Récupérer les données - Etape 1
-            $firstName    = $_REQUEST['name'];
-            $email      = $_REQUEST['email'];
-            $subject    = $_REQUEST['subject'];
-            $message    = $_REQUEST['message'];
+            $firstName    = $_POST['name'] ?? '';
+            $email      = $_POST['email'] ?? '';
+            $subject    = $_POST['subject'] ?? '';
+            $message    = $_POST['message'] ?? '';
             $errors = 0;
 
 
@@ -203,13 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Cas Nominal  
             if ($errors === 0) {
 
-              // Traitement des données - Etape 3
-              $to      = 'godwindovon@gmail.com';
-              $headers = 'From: ' . $email . "\r\n" . 'Reply-To: ' . $email . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-              //mail($to, $subject, $message, $headers);
-
-
-              echo '<div class="alert alert-success" role="alert">Votre message a été envoyé avec succès !</div>';
+              // Projet de démonstration : aucun email n'est réellement envoyé
+              echo '<div class="alert alert-success" role="alert">Merci ! (Site de démonstration : le message n\'est pas réellement envoyé.)</div>';
               unset($firstName);
               unset($email);
               unset($message);
@@ -219,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           }
 
 ?>
-        <form action="CONTAC.php" method="POST" class="contact-form">
+        <form action="contact.php" method="POST" class="contact-form">
             <div class="form-group">
                 <label for="name">Nom</label>
                 <input type="text" id="name" name="name" placeholder="Votre nom" required>
@@ -239,7 +205,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="submit-button">Envoyer</button>
         </form>
     </div>
-    <?php include 'footer.php'; ?> 
-    
-</body>
-</html>
+
+<?php include __DIR__ . '/includes/footer.php'; ?>

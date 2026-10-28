@@ -19,6 +19,7 @@ pending_emails.json
 
 # --- Dépendances / build ---
 /vendor/
+.phpunit.cache/
 node_modules/
 dist/
 

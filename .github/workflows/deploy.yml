@@ -1,19 +1,24 @@
 # Intégration et déploiement continus du portfolio
-#  - CI : à chaque push et pull request, on vérifie que le code est sain
-#  - CD : à chaque push sur main, si la CI réussit, la nouvelle version est mise en ligne
-#         sur https://mds.godwindovon.fr (VPS OVH, utilisateur "deploy")
+#  - CI : à chaque push et pull request vers main ou preprod, on vérifie que le code est sain
+#         (syntaxe, secrets, tests unitaires, compilation React)
+#  - CD : quand la CI réussit sur une branche d'environnement, la version est mise en ligne
+#         (VPS OVH, utilisateur "deploy") :
+#           preprod -> https://preprod.godwindovon.fr (pré-production)
+#           main    -> https://mds.godwindovon.fr     (production)
+#  Les deux branches sont protégées : on n'y arrive que par une pull request dont la CI est verte.
 name: CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, preprod]
   pull_request:
-    branches: [main]
+    branches: [main, preprod]
   workflow_dispatch:          # lancement manuel possible depuis l'onglet Actions
 
-# Deux déploiements ne tournent jamais en même temps : le plus récent attend la fin du précédent
+# Deux déploiements d'un même environnement ne tournent jamais en même temps :
+# le plus récent attend la fin du précédent
 concurrency:
-  group: deploiement-production
+  group: deploiement-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -59,6 +64,13 @@ jobs:
           fi
           echo "Aucun secret détecté"
 
+      - name: Installation des dépendances de test (Composer)
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      # Un seul test en échec fait échouer la CI, et donc bloque le déploiement
+      - name: Tests unitaires (PHPUnit)
+        run: vendor/bin/phpunit --testdox
+
       - name: Installation de Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -73,13 +85,22 @@ jobs:
           npm run build
 
   # ---------------------------------------------------------------------------
-  # CD : mise en ligne, uniquement si la CI a réussi et sur la branche main
+  # CD : mise en ligne, uniquement si la CI a réussi, après un merge sur main ou preprod
+  # (jamais pour une pull request encore ouverte)
   # ---------------------------------------------------------------------------
   deploy:
-    name: Déploiement en production (CD)
+    name: Déploiement en ${{ github.ref_name == 'main' && 'production' || 'pré-production' }} (CD)
     needs: ci
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preprod')
     runs-on: ubuntu-latest
+    # Environnement GitHub : historique des déploiements et lien vers le site dans l'onglet "Deployments"
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'preproduction' }}
+      url: ${{ github.ref_name == 'main' && 'https://mds.godwindovon.fr' || 'https://preprod.godwindovon.fr' }}
+    env:
+      SITE: ${{ github.ref_name == 'main' && 'https://mds.godwindovon.fr' || 'https://preprod.godwindovon.fr' }}
+      DOSSIER: ${{ github.ref_name == 'main' && '/srv/portfolio-mds' || '/srv/portfolio-preprod' }}
+      SCRIPT: ${{ github.ref_name == 'main' && 'deploy-portfolio-mds' || 'deploy-portfolio-preprod' }}
     steps:
       - name: Récupération du code
         uses: actions/checkout@v4
@@ -100,18 +121,18 @@ jobs:
           # git archive : uniquement les fichiers versionnés (aucun secret, aucune donnée locale)
           git archive --format=tar HEAD \
             | ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$CIBLE" \
-              'find /srv/portfolio-mds/incoming -mindepth 1 -delete && tar -x -C /srv/portfolio-mds/incoming && echo "$(find /srv/portfolio-mds/incoming -type f | wc -l) fichiers reçus"'
+              "find $DOSSIER/incoming -mindepth 1 -delete && tar -x -C $DOSSIER/incoming && echo \"\$(find $DOSSIER/incoming -type f | wc -l) fichiers reçus dans $DOSSIER\""
 
       - name: Mise en ligne (script du serveur)
         env:
           CIBLE: ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}
-        run: ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$CIBLE" 'sudo /usr/local/bin/deploy-portfolio-mds'
+        run: ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$CIBLE" "sudo /usr/local/bin/$SCRIPT"
 
       - name: Vérification du site en ligne
         run: |
           for page in "" realisations.php contact.php "projets/restaurant/index.php?page=menu" projets/site-vitrine/ projets/calculateur-imc/ projets/todo-javascript/ projets/todo-react/demo/; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" "https://mds.godwindovon.fr/$page")
-            echo "$code  https://mds.godwindovon.fr/$page"
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$SITE/$page")
+            echo "$code  $SITE/$page"
             test "$code" = "200"
           done
 

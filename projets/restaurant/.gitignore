@@ -1,0 +1,15 @@
+# --- Informations sensibles ---
+includes/config.php
+.env
+.env.*
+
+# --- Photos de profil envoyées par les utilisateurs (les images des plats sont versionnées) ---
+uploads/profils/*
+
+# --- Système / éditeur ---
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

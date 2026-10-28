@@ -1,0 +1,7 @@
+# Site vitrine moderne
+
+Site vitrine en HTML, CSS, JavaScript et PHP (location de voitures, bateaux, jet-skis et immobilier), avec un formulaire de contact validé côté serveur.
+
+> Projet de démonstration : le formulaire valide les données mais n'envoie pas d'email.
+
+Lancer : placer le dossier dans un serveur PHP (ex. XAMPP) et ouvrir `index.php`.

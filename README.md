@@ -19,9 +19,9 @@ Portfolio de développeur full-stack : présentation, réalisations et formulair
 ├── config.example.php        Modèle de configuration (copier en config.php)
 ├── data/                     Messages de contact enregistrés (non versionné, non servi)
 └── projets/                  Démos des réalisations
-    ├── restaurant/           Application PHP/MySQL avec PayPal  (dépôt séparé)
-    ├── site-vitrine/         Site vitrine The Circle             (dépôt séparé)
-    ├── calculateur-imc/      Calculateur d'IMC en PHP             (dépôt séparé)
+    ├── restaurant/           Application PHP/MySQL avec PayPal
+    ├── site-vitrine/         Site vitrine The Circle
+    ├── calculateur-imc/      Calculateur d'IMC en PHP
     ├── todo-javascript/      Todo list en JavaScript natif
     └── todo-react/           Todo list React (app/ = sources, demo/ = version compilée)
 ```

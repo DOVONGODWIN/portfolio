@@ -1,0 +1,3 @@
+# Exclus de "git archive" (donc du déploiement) : inutiles sur le serveur
+.github export-ignore
+.gitattributes export-ignore
